@@ -20,8 +20,19 @@ namespace CodeBits
                  RunAsService(service);
          }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public event EventHandler ConsoleModeStarted;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public event EventHandler<ConsoleModeExceptionEventArgs> ConsoleModeException;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public event EventHandler ConsoleModeStopped;
 
         private void RunAsConsole(ServiceBase service)
@@ -76,10 +87,17 @@ namespace CodeBits
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class ConsoleModeExceptionEventArgs : EventArgs
     {
         private readonly Exception _exception;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="exception"></param>
         public ConsoleModeExceptionEventArgs(Exception exception)
         {
             if (exception == null)
@@ -87,6 +105,9 @@ namespace CodeBits
             _exception = exception;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public Exception Exception
         {
             get { return _exception; }
