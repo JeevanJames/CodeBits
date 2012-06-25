@@ -6,7 +6,7 @@ using System.Linq;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
-namespace CodeBitsWP
+namespace CodeBits
 {
     public sealed class AppBarHelper
     {
