@@ -50,5 +50,29 @@ namespace CodeBits
         {
             base.InsertItem(index, item);
         }
+
+        protected override void SetItem(int index, T item)
+        {
+            base.SetItem(index, item);
+        }
+
+        private int GetInsertIndex(T item)
+        {
+            if (Count == 0)
+                return 0;
+            return Count <= SimpleAlgorithmThreshold ? GetInsertIndexSimple(item) : GetInsertIndexComplex(item);
+        }
+
+        private int GetInsertIndexSimple(T item)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private int GetInsertIndexComplex(T item)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private const int SimpleAlgorithmThreshold = 10;
     }
 }
