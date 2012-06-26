@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace CodeBits
@@ -9,32 +10,31 @@ namespace CodeBits
     /// <typeparam name="T">The type of the elements in the collection</typeparam>
     public class OrderedCollection<T> : Collection<T>
     {
+        private readonly IComparer<T> _comparer;
         private readonly bool _allowDuplicates;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public OrderedCollection() : this(false)
+        public OrderedCollection()
+            : this(false, null)
         {
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="allowDuplicates"></param>
-        public OrderedCollection(bool allowDuplicates)
+        public OrderedCollection(bool allowDuplicates = false, IComparer<T> comparer = null)
         {
+            if (comparer == null)
+            {
+                Type comparableType = typeof(IComparable<>).MakeGenericType(typeof(T));
+                if (comparableType.IsAssignableFrom(typeof(T)))
+                    _comparer = new ComparableComparer<T>();
+            } else
+                _comparer = comparer;
             _allowDuplicates = allowDuplicates;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="list"></param>
-        /// <param name="allowDuplicates"></param>
-        public OrderedCollection(IList<T> list, bool allowDuplicates = false)
-            : base(list)
+        public OrderedCollection(Comparison<T> comparison, bool allowDuplicates = false)
         {
+            if (comparison == null)
+                throw new ArgumentNullException("comparison");
+            _comparer = new ComparisonComparer<T>(comparison);
             _allowDuplicates = allowDuplicates;
         }
 
@@ -48,7 +48,10 @@ namespace CodeBits
 
         protected override void InsertItem(int index, T item)
         {
-            base.InsertItem(index, item);
+            int insertIndex = GetInsertIndex(item);
+            if (insertIndex < 0)
+                throw new ArgumentException("Attempting to insert duplicate value in collection");
+            base.InsertItem(insertIndex, item);
         }
 
         protected override void SetItem(int index, T item)
@@ -65,7 +68,16 @@ namespace CodeBits
 
         private int GetInsertIndexSimple(T item)
         {
-            throw new System.NotImplementedException();
+            for (int i = 0; i < Items.Count; i++)
+            {
+                T existingItem = Items[i];
+                int comparison = _comparer.Compare(item, existingItem);
+                if (comparison == 0 && !_allowDuplicates)
+                    return -1;
+                if (comparison > 0)
+                    return i;
+            }
+            return 0;
         }
 
         private int GetInsertIndexComplex(T item)
@@ -74,5 +86,28 @@ namespace CodeBits
         }
 
         private const int SimpleAlgorithmThreshold = 10;
+
+        private sealed class ComparableComparer<T> : IComparer<T>
+        {
+            int IComparer<T>.Compare(T x, T y)
+            {
+                return ((IComparable<T>)x).CompareTo(y);
+            }
+        }
+
+        private sealed class ComparisonComparer<T> : IComparer<T>
+        {
+            private readonly Comparison<T> _comparison;
+
+            internal ComparisonComparer(Comparison<T> comparison)
+            {
+                _comparison = comparison;
+            }
+
+            int IComparer<T>.Compare(T x, T y)
+            {
+                return _comparison(x, y);
+            }
+        }
     }
 }
