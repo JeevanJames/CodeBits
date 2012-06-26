@@ -47,8 +47,12 @@
     <Reference Include="xunit">
       <HintPath>..\packages\xunit.1.9.0.1566\lib\xunit.dll</HintPath>
     </Reference>
+    <Reference Include="xunit.extensions">
+      <HintPath>..\packages\xunit.extensions.1.9.0.1566\lib\xunit.extensions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnumListTests.cs" />
     <Compile Include="OrderCollectionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -56,10 +60,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodeBitsPortable\CodeBitsPortable.csproj">
-      <Project>{f7ad33bd-2cbd-4d28-bc29-47158c817597}</Project>
-      <Name>CodeBitsPortable</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CodeBits\CodeBits.csproj">
       <Project>{3f59a0c2-0370-41ed-8469-272c37e2db00}</Project>
       <Name>CodeBits</Name>
