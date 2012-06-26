@@ -43,7 +43,7 @@
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EnumList.cs" />
+    <Compile Include="EnumIterator.cs" />
     <Compile Include="OrderedCollection.cs" />
     <Compile Include="OrderedObservableCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

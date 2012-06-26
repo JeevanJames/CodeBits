@@ -28,12 +28,12 @@ namespace CodeBits
     /// Provides an enumerator for an enum type
     /// </summary>
     /// <typeparam name="T">The type of enum to enumerate over</typeparam>
-    public sealed class EnumList<T> : IEnumerable<T>
+    public sealed class EnumIterator<T> : IEnumerable<T>
         where T : struct
     {
         private IEnumerator<T> _enumerator;
 
-        public EnumList()
+        public EnumIterator()
         {
             if (!typeof(T).IsEnum)
                 throw new ArgumentException("Generic parameter must be an enum");

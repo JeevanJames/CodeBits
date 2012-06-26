@@ -8,30 +8,30 @@ using Xunit;
 
 namespace CodeBits.Tests
 {
-    public sealed class EnumListTests
+    public sealed class EnumIteratorTests
     {
         [Fact]
         public void Ctor_should_throw_if_non_enum_type_is_specified()
         {
-            Assert.Throws<ArgumentException>(() => new EnumList<int>());
-            Assert.Throws<ArgumentException>(() => new EnumList<long>());
-            Assert.Throws<ArgumentException>(() => new EnumList<double>());
-            Assert.Throws<ArgumentException>(() => new EnumList<float>());
-            Assert.Throws<ArgumentException>(() => new EnumList<decimal>());
-            Assert.Throws<ArgumentException>(() => new EnumList<DateTime>());
+            Assert.Throws<ArgumentException>(() => new EnumIterator<int>());
+            Assert.Throws<ArgumentException>(() => new EnumIterator<long>());
+            Assert.Throws<ArgumentException>(() => new EnumIterator<double>());
+            Assert.Throws<ArgumentException>(() => new EnumIterator<float>());
+            Assert.Throws<ArgumentException>(() => new EnumIterator<decimal>());
+            Assert.Throws<ArgumentException>(() => new EnumIterator<DateTime>());
         }
 
         [Fact]
         public void Ctor_should_succeed_if_enum_type_is_specified()
         {
-            Assert.NotNull(new EnumList<DayOfWeek>());
-            Assert.NotNull(new EnumList<BindingFlags>());
+            Assert.NotNull(new EnumIterator<DayOfWeek>());
+            Assert.NotNull(new EnumIterator<BindingFlags>());
         }
 
         [Fact]
         public void Enumerator_should_return_all_enum_values_in_correct_order()
         {
-            List<DayOfWeek> daysOfWeek = new EnumList<DayOfWeek>().ToList();
+            List<DayOfWeek> daysOfWeek = new EnumIterator<DayOfWeek>().ToList();
             Assert.Equal(daysOfWeek.Count, 7);
             Assert.Equal(daysOfWeek[0], DayOfWeek.Sunday);
             Assert.Equal(daysOfWeek[1], DayOfWeek.Monday);
@@ -45,7 +45,7 @@ namespace CodeBits.Tests
         [Fact]
         public void Non_generic_enumerator_should_return_all_enum_values_in_correct_order()
         {
-            var enumerable = new EnumList<DayOfWeek>() as IEnumerable;
+            var enumerable = new EnumIterator<DayOfWeek>() as IEnumerable;
             List<DayOfWeek> daysOfWeek = enumerable.OfType<DayOfWeek>().ToList();
             Assert.Equal(daysOfWeek.Count, 7);
             Assert.Equal(daysOfWeek[0], DayOfWeek.Sunday);
