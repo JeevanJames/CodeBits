@@ -52,7 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EnumListTests.cs" />
+    <Compile Include="EnumIteratorTests.cs" />
     <Compile Include="OrderCollectionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
