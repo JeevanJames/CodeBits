@@ -87,24 +87,24 @@ namespace CodeBits
 
         private const int SimpleAlgorithmThreshold = 10;
 
-        private sealed class ComparableComparer<T> : IComparer<T>
+        private sealed class ComparableComparer<TItem> : IComparer<TItem>
         {
-            int IComparer<T>.Compare(T x, T y)
+            int IComparer<TItem>.Compare(TItem x, TItem y)
             {
-                return ((IComparable<T>)x).CompareTo(y);
+                return ((IComparable<TItem>)x).CompareTo(y);
             }
         }
 
-        private sealed class ComparisonComparer<T> : IComparer<T>
+        private sealed class ComparisonComparer<TItem> : IComparer<TItem>
         {
-            private readonly Comparison<T> _comparison;
+            private readonly Comparison<TItem> _comparison;
 
-            internal ComparisonComparer(Comparison<T> comparison)
+            internal ComparisonComparer(Comparison<TItem> comparison)
             {
                 _comparison = comparison;
             }
 
-            int IComparer<T>.Compare(T x, T y)
+            int IComparer<TItem>.Compare(TItem x, TItem y)
             {
                 return _comparison(x, y);
             }

@@ -43,6 +43,7 @@
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OrderedObservableCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaltedHash.cs" />
     <Compile Include="WindowsServiceRunner.cs" />
