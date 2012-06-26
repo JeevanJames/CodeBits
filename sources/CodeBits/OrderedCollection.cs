@@ -58,14 +58,14 @@ namespace CodeBits
         }
 
         /// <summary>
-        /// 
+        /// Specifies whether duplicate values are allowed in the collection
         /// </summary>
         public bool AllowDuplicates
         {
             get { return _allowDuplicates; }
         }
 
-        protected override void InsertItem(int index, T item)
+        protected override sealed void InsertItem(int index, T item)
         {
             int insertIndex = GetInsertIndex(item);
             if (insertIndex < 0)
@@ -73,7 +73,7 @@ namespace CodeBits
             base.InsertItem(insertIndex, item);
         }
 
-        protected override void SetItem(int index, T item)
+        protected override sealed void SetItem(int index, T item)
         {
             RemoveItem(index);
             int insertIndex = GetInsertIndex(item);
@@ -103,6 +103,9 @@ namespace CodeBits
             return Count;
         }
 
+        //Performs a divide-and-conquer search for the best location to insert the new item.
+        //Since the list is already sorted, this is the fastest algorithm after the collection size
+        //crosses a certain threshold.
         private int GetInsertIndexComplex(T item)
         {
             int minIndex = 0, maxIndex = Count - 1;
