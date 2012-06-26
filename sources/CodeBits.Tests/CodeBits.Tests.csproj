@@ -50,6 +50,7 @@
     <Compile Include="EnumIteratorTests.cs" />
     <Compile Include="OrderCollectionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaltedHashTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
