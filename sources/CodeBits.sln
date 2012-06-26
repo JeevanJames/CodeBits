@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeBits", "CodeBits\CodeBi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeBitsWP", "CodeBitsWP\CodeBitsWP.csproj", "{364B1D96-4478-42A1-A391-ADEA2E827E90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeBitsPortable", "CodeBitsPortable\CodeBitsPortable.csproj", "{F7AD33BD-2CBD-4D28-BC29-47158C817597}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeBits.Tests", "CodeBits.Tests\CodeBits.Tests.csproj", "{62158B17-7C87-464F-8B08-E3B4E8379A79}"
 EndProject
 Global
@@ -15,17 +13,14 @@ Global
 		SccLocalPath0 = .
 		SccLocalPath1 = CodeBits
 		SccLocalPath2 = CodeBitsWP
-		SccLocalPath3 = CodeBitsPortable
-		SccLocalPath4 = CodeBits.Tests
-		SccNumberOfProjects = 5
+		SccLocalPath3 = CodeBits.Tests
+		SccNumberOfProjects = 4
 		SccProjectName1 = CodeBits
 		SccProjectName2 = CodeBitsWP
-		SccProjectName3 = CodeBitsPortable
-		SccProjectName4 = CodeBits.Tests
+		SccProjectName3 = CodeBits.Tests
 		SccProjectUniqueName1 = CodeBits\\CodeBits.csproj
 		SccProjectUniqueName2 = CodeBitsWP\\CodeBitsWP.csproj
-		SccProjectUniqueName3 = CodeBitsPortable\\CodeBitsPortable.csproj
-		SccProjectUniqueName4 = CodeBits.Tests\\CodeBits.Tests.csproj
+		SccProjectUniqueName3 = CodeBits.Tests\\CodeBits.Tests.csproj
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,10 +40,6 @@ Global
 		{62158B17-7C87-464F-8B08-E3B4E8379A79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62158B17-7C87-464F-8B08-E3B4E8379A79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62158B17-7C87-464F-8B08-E3B4E8379A79}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F7AD33BD-2CBD-4D28-BC29-47158C817597}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F7AD33BD-2CBD-4D28-BC29-47158C817597}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F7AD33BD-2CBD-4D28-BC29-47158C817597}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F7AD33BD-2CBD-4D28-BC29-47158C817597}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
