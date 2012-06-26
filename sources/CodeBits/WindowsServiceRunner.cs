@@ -23,10 +23,16 @@ using System.ServiceProcess;
 
 namespace CodeBits
 {
+    /// <summary>
+    /// Provides functionality to execute a Windows service class as either a console application or
+    /// a Windows service, depending on how the project properties are set.
+    /// To run as a console application, set the project output type to "Console Application"
+    /// To run as a Windows service, set the project output type to "Windows Application"
+    /// </summary>
     public sealed class WindowsServiceRunner
     {
         /// <summary>
-        /// Starts the service logic.
+        /// Starts the service logic in the appropriate environment
         /// </summary>
         /// <typeparam name="TService">The type of the service to start</typeparam>
          public void Run<TService>()
