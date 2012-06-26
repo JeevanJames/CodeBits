@@ -40,23 +40,5 @@ namespace CodeBits.Tests
             for (int i = 0; i < collection.Count; i++)
                 Assert.Equal(collection[i], values[i]);
         }
-
-        [Fact]
-        public void DevTest()
-        {
-            var coll = new OrderedCollection<string>(false);
-            coll.Add("Merina");
-            coll.Add("Jeevan");
-            coll.Add("Ryan");
-            coll.Add("James");
-            coll.Add("Kkkkk");
-
-            Assert.Equal(5, coll.Count);
-            Assert.Equal("James", coll[0]);
-            Assert.Equal("Jeevan", coll[1]);
-            Assert.Equal("Kkkkk", coll[2]);
-            Assert.Equal("Merina", coll[3]);
-            Assert.Equal("Ryan", coll[4]);
-        }
     }
 }
