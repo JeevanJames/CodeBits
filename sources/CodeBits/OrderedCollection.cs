@@ -32,12 +32,22 @@ namespace CodeBits
         private readonly IComparer<T> _comparer;
         private readonly bool _allowDuplicates;
 
+        /// <summary>
+        /// Initializes a new instance of the OrderedCollection.
+        /// </summary>
         public OrderedCollection()
-            : this(false, null)
+            : this((IComparer<T>)null, false)
         {
         }
 
-        public OrderedCollection(bool allowDuplicates = false, IComparer<T> comparer = null)
+        /// <summary>
+        /// Initializes a new instance of the OrderedCollection using an optional IComparer implementation.
+        /// If the IComparer instance is not specified, then the collection attempts to use the type's
+        /// IComparable implementation to perform comparisons.
+        /// </summary>
+        /// <param name="comparer">Optional IComparer implementation used for the item comparisons during ordering</param>
+        /// <param name="allowDuplicates">True if the collection should allow duplicate values</param>
+        public OrderedCollection(IComparer<T> comparer = null, bool allowDuplicates = false)
         {
             if (comparer == null)
             {
@@ -49,6 +59,12 @@ namespace CodeBits
             _allowDuplicates = allowDuplicates;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the OrderedCollection class using a Comparison delegate for
+        /// the comparison logic.
+        /// </summary>
+        /// <param name="comparison">The comparison delegate used for the item comparisons during ordering</param>
+        /// <param name="allowDuplicates">True if the collection should allow duplicate values</param>
         public OrderedCollection(Comparison<T> comparison, bool allowDuplicates = false)
         {
             if (comparison == null)
@@ -82,6 +98,21 @@ namespace CodeBits
             base.InsertItem(insertIndex, item);
         }
 
+        /// <summary>
+        /// Performs a comparison between two item of type T. By default, this uses the IComparer implementation
+        /// or the Comparison delegate specified in the constructor, but derived types can override
+        /// this method to specify their own custom logic.
+        /// </summary>
+        /// <param name="x">The first item to compare</param>
+        /// <param name="y">The second item to compare</param>
+        /// <returns>A signed integer - zero if the items are equal, less than zero if x is less than y and greater than zero if x is greater than y</returns>
+        protected virtual int Compare(T x, T y)
+        {
+            if (_comparer == null)
+                throw new InvalidOperationException("No comparison logic available for the collection");
+            return _comparer.Compare(x, y);
+        }
+
         private int GetInsertIndex(T item)
         {
             if (Count == 0)
@@ -89,12 +120,15 @@ namespace CodeBits
             return Count <= SimpleAlgorithmThreshold ? GetInsertIndexSimple(item) : GetInsertIndexComplex(item);
         }
 
+        //Performs a simple left-to-right search for the best location to insert the new item.
+        //This algorithm is used while the collection size is small, i.e. less than or equal to the
+        //value specified by the SimpleAlgorithmThreshold constant.
         private int GetInsertIndexSimple(T item)
         {
             for (int i = 0; i < Items.Count; i++)
             {
                 T existingItem = Items[i];
-                int comparison = _comparer.Compare(existingItem, item);
+                int comparison = Compare(existingItem, item);
                 if (comparison == 0)
                     return _allowDuplicates ? i : -1;
                 if (comparison > 0)
@@ -112,7 +146,7 @@ namespace CodeBits
             while (minIndex < maxIndex)
             {
                 int pivotIndex = (maxIndex + minIndex) / 2;
-                int comparison = _comparer.Compare(item, Items[pivotIndex]);
+                int comparison = Compare(item, Items[pivotIndex]);
                 if (comparison == 0)
                     return _allowDuplicates ? pivotIndex : -1;
                 if (comparison < 0)
@@ -128,6 +162,7 @@ namespace CodeBits
 
     public partial class OrderedCollection<T>
     {
+        //Comparer that uses the type's IComparable implementation to compare two values.
         private sealed class ComparableComparer<TItem> : IComparer<TItem>
         {
             int IComparer<TItem>.Compare(TItem x, TItem y)
@@ -139,6 +174,7 @@ namespace CodeBits
 
     public partial class OrderedCollection<T>
     {
+        //Comparer that uses a Comparison delegate to perform the comparison logic.
         private sealed class ComparisonComparer<TItem> : IComparer<TItem>
         {
             private readonly Comparison<TItem> _comparison;

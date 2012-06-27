@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <version>1.0</version>
+    <authors>Jeevan James</authors>
+    <owners>Jeevan James</owners>
+    <licenseUrl>http://codebits.codeplex.com/license</licenseUrl>
+    <projectUrl>http://codebits.codeplex.com/</projectUrl>
+    <iconUrl>http://www.codeplex.com/Download?ProjectName=codebits&amp;DownloadId=417912</iconUrl>
+    <id>CodeBits.OrderedCollection</id>
+    <title>CodeBits Ordered Collection</title>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Ordered collection</description>
+    <summary />
+    <releaseNotes />
+    <copyright>Copyright (c) Jeevan James 2012</copyright>
+    <tags>CodeBits code bits blocks ordered collection sorted</tags>
+  </metadata>
+  <files>
+    <file src="..\sources\CodeBits\OrderedCollection.cs" target="content\CodeBits\OrderedCollection.cs" />
+  </files>
+</package>
