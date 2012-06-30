@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using Xunit;
+using Xunit.Extensions;
 
 namespace CodeBits.Tests
 {
@@ -12,33 +14,66 @@ namespace CodeBits.Tests
             var collection = new OrderedCollection<string>();
             Assert.NotNull(collection);
             Assert.Empty(collection);
-            Assert.Equal(collection.AllowDuplicates, false);
+            Assert.False(collection.AllowDuplicates);
+            Assert.False(collection.ReverseOrder);
+
+            Assert.Throws<ArgumentException>(() => new OrderedCollection<DayOfWeek>());
         }
 
         [Fact]
-        public void Verify_simple_insertions()
+        public void Verify_non_default_ctors()
         {
-            var collection = new OrderedCollection<string>();
-            collection.Add("Spiderman");
-            AssertCollection(collection, "Spiderman");
-            collection.Add("Ironman");
-            AssertCollection(collection, "Ironman", "Spiderman");
-            collection.Add("Thor");
-            AssertCollection(collection, "Ironman", "Spiderman", "Thor");
-            collection.Add("Hawkeye");
-            AssertCollection(collection, "Hawkeye", "Ironman", "Spiderman", "Thor");
-            collection.Add("Black Widow");
-            AssertCollection(collection, "Black Widow", "Hawkeye", "Ironman", "Spiderman", "Thor");
-            collection.Add("Captain America");
-            AssertCollection(collection, "Black Widow", "Captain America", "Hawkeye", "Ironman", "Spiderman", "Thor");
-            Assert.Throws<ArgumentException>(() => collection.Add("Thor"));
+            Assert.Throws<ArgumentNullException>(() => new OrderedCollection<string>((IComparer<string>)null));
+            Assert.Throws<ArgumentNullException>(() => new OrderedCollection<string>((Comparison<string>)null));
         }
 
-        private void AssertCollection(OrderedCollection<string> collection, params string[] values)
+        [Theory]
+        [PropertyData("Items")]
+        public void Verify_inserts(string[] items)
         {
-            Assert.Equal(collection.Count, values.Length);
-            for (int i = 0; i < collection.Count; i++)
-                Assert.Equal(collection[i], values[i]);
+            var collection = new OrderedCollection<string>();
+            for (int i = 0; i < items.Length; i++)
+            {
+                string item = items[i];
+                collection.Add(item);
+                Assert.Equal(i + 1, collection.Count);
+                AssertCollection(collection, (x, y) => string.Compare(x, y) <= 0);
+            }
+        }
+
+        [Theory]
+        [PropertyData("Items")]
+        public void Verify_inserts_reverse(string[] items)
+        {
+            var collection = new OrderedCollection<string>(allowDuplicates: false, reverseOrder: true);
+            for (int i = 0; i < items.Length; i++)
+            {
+                string item = items[i];
+                collection.Add(item);
+                Assert.Equal(i + 1, collection.Count);
+                AssertCollection(collection, (x, y) => string.Compare(x, y) >= 0);
+            }
+        }
+
+        private static void AssertCollection(OrderedCollection<string> collection, Func<string, string, bool> compareLogic)
+        {
+            for (int i = 0; i < collection.Count - 1; i++)
+                Assert.True(compareLogic(collection[i], collection[i + 1]));
+        }
+
+        public static IEnumerable<object[]> Items
+        {
+            get
+            {
+                yield return
+                    new object[] {
+                        new[] {
+                            "Thor", "Hulk", "Captain America", "Ironman", "Black Window", "Hawkeye", "Black Panther", "Quake", "Protector",
+                            "Vision", "Red Hulk", "Spider-Woman", "Ant-Man", "Wasp"
+                        }
+                    };
+                yield return new object[] { new[] { "Flash", "Superman", "Batman", "Wonder Woman", "Aquaman", "Hawkgirl" } };
+            }
         }
     }
 }

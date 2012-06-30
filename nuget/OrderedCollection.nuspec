@@ -10,7 +10,7 @@
     <id>CodeBits.OrderedCollection</id>
     <title>CodeBits Ordered Collection</title>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Ordered collection</description>
+    <description>Always sorted collection</description>
     <summary />
     <releaseNotes />
     <copyright>Copyright (c) Jeevan James 2012</copyright>
