@@ -18,6 +18,11 @@ limitations under the License.
 */
 #endregion
 
+/*
+Required references:
+ * Microsoft.Phone.Controls
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,18 +36,27 @@ namespace CodeBits
     public sealed class AppBarHelper
     {
         private readonly IApplicationBar _applicationBar;
+        private readonly string _imagesRootFolder;
         private readonly AppBarGroups _groups = new AppBarGroups();
 
-        public AppBarHelper(IApplicationBar applicationBar)
+        public AppBarHelper(IApplicationBar applicationBar, string imagesRootFolder = null)
         {
             if (applicationBar == null)
                 throw new ArgumentNullException("applicationBar");
+            if (imagesRootFolder != null)
+                _imagesRootFolder = imagesRootFolder.EndsWith("/") ? imagesRootFolder : imagesRootFolder + "/";
             _applicationBar = applicationBar;
         }
 
         public void RegisterGroup(AppBarGroup group)
         {
             _groups.Add(group);
+            foreach (AppBarIconButton iconButton in group.IconButtons)
+            {
+                string imageUrl = iconButton.RelativeUrl.ToString();
+                if (!string.IsNullOrWhiteSpace(imageUrl))
+                    iconButton.RelativeUrl = new Uri(_imagesRootFolder + imageUrl);
+            }
         }
 
         public void Update(object groupIdentifier)
@@ -210,7 +224,6 @@ namespace CodeBits
     public sealed class AppBarIconButton
     {
         private readonly string _text;
-        private readonly Uri _relativeUrl;
         private readonly EventHandler _clickHandler;
 
         public AppBarIconButton(string text, string relativeUrl, EventHandler clickHandler)
@@ -223,7 +236,7 @@ namespace CodeBits
                 throw new ArgumentNullException("clickHandler");
 
             _text = text;
-            _relativeUrl = new Uri(relativeUrl, UriKind.Relative);
+            RelativeUrl = new Uri(relativeUrl, UriKind.Relative);
             _clickHandler = clickHandler;
         }
 
@@ -232,10 +245,7 @@ namespace CodeBits
             get { return _text; }
         }
 
-        public Uri RelativeUrl
-        {
-            get { return _relativeUrl; }
-        }
+        public Uri RelativeUrl { get; internal set; }
 
         public EventHandler ClickHandler
         {
