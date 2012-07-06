@@ -1,6 +1,7 @@
 ﻿#region --- License & Copyright Notice ---
 /*
-Copyright (c) 2005-2011 Jeevan James
+CodeBits Code Snippets
+Copyright (c) 2012 Jeevan James
 All rights reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
