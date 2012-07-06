@@ -7,16 +7,16 @@
     <licenseUrl>http://codebits.codeplex.com/license</licenseUrl>
     <projectUrl>http://codebits.codeplex.com/</projectUrl>
     <iconUrl>http://www.codeplex.com/Download?ProjectName=codebits&amp;DownloadId=417912</iconUrl>
-    <id>CodeBits.OrderedCollection</id>
-    <title>CodeBits Ordered Collection</title>
+    <id>CodeBits.WP.AppBarHelper</id>
+    <title>CodeBits AppBar Helper for Windows Phone</title>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Always sorted collection</description>
+    <description>Helper class to simplify usage of the Windows Phone application bar</description>
     <summary />
     <releaseNotes>Initial release</releaseNotes>
     <copyright>Copyright (c) Jeevan James 2012</copyright>
-    <tags>CodeBits code bits blocks ordered collection sorted</tags>
+    <tags>CodeBits code bits blocks windows-phone windows phone wp appbar helper</tags>
   </metadata>
   <files>
-    <file src="..\sources\CodeBits\OrderedCollection.cs" target="content\CodeBits\OrderedCollection.cs" />
+    <file src="..\sources\CodeBitsWP\AppBarHelper.cs" target="content\CodeBitsWP\AppBarHelper.cs" />
   </files>
 </package>
