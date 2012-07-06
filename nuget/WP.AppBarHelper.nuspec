@@ -17,6 +17,6 @@
     <tags>CodeBits code bits blocks windows-phone windows phone wp appbar helper</tags>
   </metadata>
   <files>
-    <file src="..\sources\CodeBitsWP\AppBarHelper.cs" target="content\CodeBitsWP\AppBarHelper.cs" />
+    <file src="..\sources\CodeBitsWP\AppBarHelper.cs" target="content\sl4-wp71\CodeBits\AppBarHelper.cs" />
   </files>
 </package>
