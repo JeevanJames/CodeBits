@@ -56,5 +56,16 @@ namespace CodeBits.Tests
             Assert.Equal(daysOfWeek[5], DayOfWeek.Friday);
             Assert.Equal(daysOfWeek[6], DayOfWeek.Saturday);
         }
+
+        [Fact]
+        public void Basic_linq_functions_work_on_the_iterator()
+        {
+            var enumerable = new EnumIterator<DayOfWeek>();
+            Assert.Equal(DayOfWeek.Sunday, enumerable.First());
+            Assert.Equal(DayOfWeek.Saturday, enumerable.Last());
+            Assert.Equal(DayOfWeek.Wednesday, enumerable.Skip(3).Take(1).Single());
+            Assert.True(enumerable.Any());
+            Assert.Equal(7, enumerable.Count());
+        }
     }
 }

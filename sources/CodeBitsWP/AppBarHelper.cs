@@ -21,6 +21,8 @@ limitations under the License.
 /*
 Required references:
  * Microsoft.Phone.Controls
+
+Usage help: http://codebits.codeplex.com/wikipage?title=WP_AppBarHelper
 */
 
 using System;
@@ -57,6 +59,15 @@ namespace CodeBits
                 if (!string.IsNullOrWhiteSpace(imageUrl))
                     iconButton.RelativeUrl = new Uri(_imagesRootFolder + imageUrl);
             }
+        }
+
+        public void RegisterGroup(object groupIdentifier, IEnumerable<AppBarIconButton> iconButtons = null,
+            IEnumerable<AppBarMenuItem> menuItems = null, Action<AppBarGroup> initializer = null)
+        {
+            var group = new AppBarGroup(groupIdentifier, iconButtons, menuItems);
+            if (initializer != null)
+                initializer(group);
+            RegisterGroup(group);
         }
 
         public void Update(object groupIdentifier)
