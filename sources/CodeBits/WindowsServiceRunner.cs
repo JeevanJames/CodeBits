@@ -22,6 +22,12 @@ using System;
 using System.Reflection;
 using System.ServiceProcess;
 
+/*
+Required References:
+ * System.ServiceProcess
+Documentation: http://codebits.codeplex.com/wikipage?title=WindowsServiceRunner
+*/
+
 namespace CodeBits
 {
     /// <summary>
@@ -47,17 +53,17 @@ namespace CodeBits
          }
 
         /// <summary>
-        /// 
+        /// Fired when the service logic starts in console mode.
         /// </summary>
         public event EventHandler ConsoleModeStarted;
 
         /// <summary>
-        /// 
+        /// Fired if an exception is thrown in console mode.
         /// </summary>
         public event EventHandler<ConsoleModeExceptionEventArgs> ConsoleModeException;
 
         /// <summary>
-        /// 
+        /// Fired when the service logic completes in console mode.
         /// </summary>
         public event EventHandler ConsoleModeStopped;
 
@@ -120,11 +126,7 @@ namespace CodeBits
     {
         private readonly Exception _exception;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="exception"></param>
-        public ConsoleModeExceptionEventArgs(Exception exception)
+        internal ConsoleModeExceptionEventArgs(Exception exception)
         {
             if (exception == null)
                 throw new ArgumentNullException("exception");
@@ -132,7 +134,7 @@ namespace CodeBits
         }
 
         /// <summary>
-        /// 
+        /// The exception that was thrown.
         /// </summary>
         public Exception Exception
         {
