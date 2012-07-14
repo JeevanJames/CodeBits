@@ -10,7 +10,8 @@
     <id>CodeBits.WP.AppBarHelper</id>
     <title>CodeBits AppBar Helper for Windows Phone</title>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Helper class to simplify usage of the Windows Phone application bar</description>
+    <description>Helper class to simplify usage of the Windows Phone application bar.
+See the project site for documentation.</description>
     <summary />
     <releaseNotes>Added a better overload to the AppBarHelper.RegisterGroup method to simplify its usage.
 Completed documentation on CodePlex. See source file for link.</releaseNotes>
