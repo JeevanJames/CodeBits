@@ -19,6 +19,7 @@ limitations under the License.
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.ServiceProcess;
 
@@ -38,6 +39,12 @@ namespace CodeBits
     /// </summary>
     public sealed class WindowsServiceRunner
     {
+        static WindowsServiceRunner()
+        {
+            if (Environment.UserInteractive)
+                Trace.Listeners.Add(new ConsoleTraceListener());
+        }
+
         /// <summary>
         /// Starts the service logic in the appropriate environment
         /// </summary>
@@ -120,7 +127,7 @@ namespace CodeBits
     }
 
     /// <summary>
-    /// 
+    /// Provides data for the ConsoleModeException event
     /// </summary>
     public sealed class ConsoleModeExceptionEventArgs : EventArgs
     {

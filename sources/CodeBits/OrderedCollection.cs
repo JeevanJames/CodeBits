@@ -48,7 +48,7 @@ namespace CodeBits
         /// </summary>
         /// <param name="allowDuplicates">True if the collection should allow duplicate values</param>
         /// <param name="reverseOrder">True to reverse the order in which the items are sorted</param>
-        public OrderedCollection(bool allowDuplicates, bool reverseOrder)
+        public OrderedCollection(bool allowDuplicates = false, bool reverseOrder = false)
         {
             Type comparableType = typeof(IComparable<>).MakeGenericType(typeof(T));
             if (!comparableType.IsAssignableFrom(typeof(T))) 
