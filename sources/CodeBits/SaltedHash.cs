@@ -18,6 +18,10 @@ limitations under the License.
 */
 #endregion
 
+/*
+Documentation: http://codebits.codeplex.com/wikipage?title=SaltedHash
+*/
+
 using System;
 using System.Linq;
 using System.Security.Cryptography;

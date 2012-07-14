@@ -18,16 +18,16 @@ limitations under the License.
 */
 #endregion
 
-using System;
-using System.Diagnostics;
-using System.Reflection;
-using System.ServiceProcess;
-
 /*
 Required References:
  * System.ServiceProcess
 Documentation: http://codebits.codeplex.com/wikipage?title=WindowsServiceRunner
 */
+
+using System;
+using System.Diagnostics;
+using System.Reflection;
+using System.ServiceProcess;
 
 namespace CodeBits
 {
