@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <authors>Jeevan James</authors>
     <owners>Jeevan James</owners>
     <licenseUrl>http://codebits.codeplex.com/license</licenseUrl>
@@ -13,7 +13,7 @@
     <description>Executes Windows service code as either a Console application or an actual Windows service, depending on the project output type of the project.
 See the project site for documentation.</description>
     <summary />
-    <releaseNotes>Initial release</releaseNotes>
+    <releaseNotes>Registering a ConsoleTraceListener with the Debug/Trace listeners collection when the service is run in console mode, so that any Debug or Trace output statements appear in the console window.</releaseNotes>
     <copyright>Copyright (c) Jeevan James 2012</copyright>
     <tags>CodeBits code bits blocks windows service runner</tags>
   </metadata>
