@@ -215,4 +215,13 @@ namespace CodeBits
             }
         }
     }
+
+    //Changes specific to only the ObservableCollection
+    public partial class OrderedObservableCollection<T>
+    {
+        protected sealed override void MoveItem(int oldIndex, int newIndex)
+        {
+            throw new InvalidOperationException("Cannot move items in an ordered collection");
+        }
+    }
 }
