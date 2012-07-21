@@ -77,21 +77,24 @@ namespace CodeBits
         }
 
         private static readonly Dictionary<PasswordCharacters, string> AllowedPasswordCharacters = new Dictionary<PasswordCharacters, string>(4) {
-            { PasswordCharacters.LowercaseCharacters, "abcdefghijklmnopqrstuvwxyz" },
-            { PasswordCharacters.UppercaseCharacters, "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
+            { PasswordCharacters.LowercaseLetters, "abcdefghijklmnopqrstuvwxyz" },
+            { PasswordCharacters.UppercaseLetters, "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
             { PasswordCharacters.Numbers, "0123456789" },
-            { PasswordCharacters.Punctuations, @"~`!@#$%^&*()_-+= {[}]|\:;""'<,>.?/" },
+            { PasswordCharacters.Punctuations, @"~`!@#$%^&*()_-+={[}]|\:;""'<,>.?/" },
+            { PasswordCharacters.Space, " " },
         };
     }
 
     [Flags]
     public enum PasswordCharacters
     {
-        LowercaseCharacters = 0x01,
-        UppercaseCharacters = 0x02,
+        LowercaseLetters = 0x01,
+        UppercaseLetters = 0x02,
         Numbers = 0x04,
         Punctuations = 0x08,
-        AllCharacters = LowercaseCharacters | UppercaseCharacters,
-        All = AllCharacters | Numbers | Punctuations,
+        Space = 0x10,
+        AllLetters = LowercaseLetters | UppercaseLetters,
+        AlphaNumeric = AllLetters | Numbers,
+        All = AllLetters | Numbers | Punctuations | Space,
     }
 }

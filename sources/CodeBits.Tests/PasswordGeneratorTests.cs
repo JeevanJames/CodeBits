@@ -24,7 +24,7 @@ namespace CodeBits.Tests
         {
             for (int i = 1; i <= 50; i++)
             {
-                string password = PasswordGenerator.Generate(i, PasswordCharacters.AllCharacters);
+                string password = PasswordGenerator.Generate(i);
                 Assert.Equal(i, password.Length);
             }
         }
