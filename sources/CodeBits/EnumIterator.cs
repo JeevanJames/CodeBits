@@ -18,6 +18,8 @@ limitations under the License.
 */
 #endregion
 
+/* Documentation: http://codebits.codeplex.com/wikipage?title=EnumIterator */
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,30 +28,34 @@ using System.Linq;
 namespace CodeBits
 {
     /// <summary>
-    /// Provides an enumerator for an enum type
+    /// Provides iterators for enum types. Can be used in a LINQ expression.
     /// </summary>
-    /// <typeparam name="T">The type of enum to enumerate over</typeparam>
-    public sealed class EnumIterator<T> : IEnumerable<T>
-        where T : struct
+    public static partial class EnumIterator
     {
-        private IEnumerator<T> _enumerator;
-
-        public EnumIterator()
+        /// <summary>
+        /// Generates an iterator for the enum type specified by the TEnum generic parameter.
+        /// </summary>
+        /// <typeparam name="TEnum">The enum type to generate the iterator for</typeparam>
+        /// <returns>An generic iterator that can iterate over the values of TEnum</returns>
+        public static IEnumerable<TEnum> For<TEnum>()
         {
-            if (!typeof(T).IsEnum)
+            if (!typeof(TEnum).IsEnum)
                 throw new ArgumentException("Generic parameter must be an enum");
+            return Enum.GetValues(typeof(TEnum)).Cast<TEnum>();
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        /// <summary>
+        /// Generates an iterator for the enum type specified by the TEnum generic parameter.
+        /// </summary>
+        /// <param name="enumType">The enum type to generate the iterator for</param>
+        /// <returns>A non-generic iterator that can iterate over the values of the enum</returns>
+        public static IEnumerable For(Type enumType)
         {
-            return GetEnumerator();
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            if (_enumerator == null)
-                _enumerator = Enum.GetValues(typeof(T)).Cast<T>().GetEnumerator();
-            return _enumerator;
+            if (enumType == null)
+                throw new ArgumentNullException("enumType");
+            if (!enumType.IsEnum)
+                throw new ArgumentException("enumType must be an enum");
+            return Enum.GetValues(enumType);
         }
     }
 }

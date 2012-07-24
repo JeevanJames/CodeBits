@@ -37,7 +37,7 @@ namespace CodeBits
     /// To run as a console application, set the project output type to "Console Application"
     /// To run as a Windows service, set the project output type to "Windows Application"
     /// </summary>
-    public sealed class WindowsServiceRunner
+    public sealed partial class WindowsServiceRunner
     {
         static WindowsServiceRunner()
         {
@@ -129,7 +129,7 @@ namespace CodeBits
     /// <summary>
     /// Provides data for the ConsoleModeException event
     /// </summary>
-    public sealed class ConsoleModeExceptionEventArgs : EventArgs
+    public sealed partial class ConsoleModeExceptionEventArgs : EventArgs
     {
         private readonly Exception _exception;
 
