@@ -18,6 +18,8 @@ limitations under the License.
 */
 #endregion
 
+/* Documentation: http://codebits.codeplex.com/wikipage?title=PasswordGenerator&referringTitle=Home */
+
 using System;
 using System.Collections.Generic;
 using System.Security;
@@ -26,7 +28,7 @@ using System.Text;
 
 namespace CodeBits
 {
-    public static class PasswordGenerator
+    public static partial class PasswordGenerator
     {
         public static string Generate(int length, PasswordCharacters allowedCharacters = PasswordCharacters.All)
         {
