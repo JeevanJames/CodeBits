@@ -45,12 +45,14 @@
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ByteArrayHelper.cs" />
     <Compile Include="ByteSizeFriendlyName.cs" />
     <Compile Include="EnumIterator.cs" />
     <Compile Include="GeoDistance.cs" />
     <Compile Include="OrderedCollection.cs" />
     <Compile Include="OrderedObservableCollection.cs" />
     <Compile Include="PasswordGenerator.cs" />
+    <Compile Include="Portable\ASCIIEncoding.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaltedHash.cs" />
     <Compile Include="UniqueItemGenerator.cs" />
