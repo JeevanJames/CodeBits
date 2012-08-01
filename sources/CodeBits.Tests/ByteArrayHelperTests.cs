@@ -11,6 +11,17 @@ namespace CodeBits.Tests
         private readonly byte[] _zeroedArray = new byte[] { 0, 0, 0, 0 };
 
         [Fact]
+        public void Fill_tests()
+        {
+            Assert.Throws<ArgumentNullException>(() => _nullArray.Fill(0));
+            _emptyArray.Fill(0);
+
+            var bytes = new byte[4];
+            bytes.Fill(5);
+            Assert.True(bytes.IsEqualTo(5, 5, 5, 5));
+        }
+
+        [Fact]
         public void Null_and_empty_tests()
         {
             Assert.True(_nullArray.IsEqualTo(_nullArray));
