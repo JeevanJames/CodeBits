@@ -45,6 +45,7 @@
     <Compile Include="ByteSizeFriendlyName.cs" />
     <Compile Include="EnumIterator.cs" />
     <Compile Include="GeoDistance.cs" />
+    <Compile Include="IniFile.cs" />
     <Compile Include="OrderedCollection.cs" />
     <Compile Include="OrderedObservableCollection.cs" />
     <Compile Include="PasswordGenerator.cs" />
