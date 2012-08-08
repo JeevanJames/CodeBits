@@ -48,6 +48,7 @@
     <Compile Include="ByteArrayHelperTests.cs" />
     <Compile Include="ByteSizeFriendlyNameTests.cs" />
     <Compile Include="EnumIteratorTests.cs" />
+    <Compile Include="IniFileTests.cs" />
     <Compile Include="OrderCollectionTests.cs" />
     <Compile Include="PasswordGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
