@@ -21,7 +21,6 @@ limitations under the License.
 /* Documentation: http://codebits.codeplex.com/wikipage?title=IniFile */
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -30,8 +29,9 @@ using System.Text.RegularExpressions;
 
 namespace CodeBits
 {
-    public sealed class IniFile : Collection<IniFileSection>
+    public sealed class IniFile : KeyedCollection<string, IniFileSection>
     {
+        #region Construction
         public IniFile(string iniFilePath)
         {
             if (iniFilePath == null)
@@ -54,18 +54,13 @@ namespace CodeBits
                 ParseIniFile(reader);
         }
 
-        public IniFile(TextReader reader)
-        {
-            if (reader == null)
-                throw new ArgumentNullException("reader");
-            
-            ParseIniFile(reader);
-        }
-
         public static IniFile Load(string content)
         {
-            using (var reader = new StringReader(content))
-                return new IniFile(reader);
+            byte[] contentBytes = Encoding.UTF8.GetBytes(content);
+            var stream = new MemoryStream(contentBytes.Length);
+            stream.Write(contentBytes, 0, contentBytes.Length);
+            stream.Seek(0, SeekOrigin.Begin);
+            return new IniFile(stream);
         }
 
         private void ParseIniFile(TextReader reader)
@@ -109,27 +104,53 @@ namespace CodeBits
                 throw new NotSupportedException(string.Format("Unrecognized line '{0}'", line));
             }
         }
+        #endregion
 
-        public IEnumerable<string> GetSections()
+        public void SaveTo(string filePath)
         {
-            return this.Select(section => section.Name);
+            using (StreamWriter writer = File.CreateText(filePath))
+                SaveTo(writer);
         }
 
-        public IReadOnlyDictionary<string, string> GetSection(string sectionName)
+        public void SaveTo(Stream stream)
         {
-            IniFileSection matchingSection = this.FirstOrDefault(section => section.Name == sectionName);
-            return matchingSection != null ? new ReadOnlyDictionary<string, string>(matchingSection) : null;
+            using (var writer = new StreamWriter(stream))
+                SaveTo(writer);
+        }
+
+        public void SaveTo(TextWriter writer)
+        {
+            if (writer == null)
+                throw new ArgumentNullException("writer");
+
+            foreach (IniFileSection section in this)
+            {
+                writer.WriteLine("[{0}]", section.Name);
+                foreach (IniFileProperty property in section)
+                    writer.WriteLine("{0}={1}", property.Key, property.Value);
+                writer.WriteLine();
+            }
+            writer.Flush();
+        }
+
+        protected override string GetKeyForItem(IniFileSection item)
+        {
+            return item.Name;
         }
 
         private static readonly Regex SectionPattern = new Regex(@"^\[\s*(\w[\w\s]*)\s*\]$");
         private static readonly Regex PropertyPattern = new Regex(@"^(\w[\w\s]+\w)\s*=(.*)$");
+
+        public const string PropertyFormat = PropertyKeyFormat + @"\s*=" + PropertyValueFormat;
+        public const string PropertyKeyFormat = @"(\w[\w\s]+\w)";
+        public const string PropertyValueFormat = @"(.*)";
     }
 
-    public sealed class IniFileSection : Dictionary<string, string>
+    public sealed class IniFileSection : Collection<IniFileProperty>
     {
         private readonly string _name;
 
-        internal IniFileSection(string name)
+        public IniFileSection(string name)
         {
             _name = name;
         }
@@ -138,6 +159,44 @@ namespace CodeBits
         {
             get { return _name; }
         }
+
+        public void Add(string key, string value)
+        {
+            Add(new IniFileProperty {
+                Key = key,
+                Value = value
+            });
+        }
+
+        public bool Remove(string key)
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                IniFileProperty property = this[i];
+                if (key == property.Key)
+                {
+                    RemoveAt(i);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public string this[string key]
+        {
+            get
+            {
+                IniFileProperty matchingProperty = this.FirstOrDefault(p => p.Key == key);
+                return matchingProperty != null ? matchingProperty.Value : null;
+            }
+            set { Add(key, value); }
+        }
+    }
+
+    public sealed class IniFileProperty
+    {
+        public string Key { get; set; }
+        public string Value { get; set; }
     }
 
     public sealed class IniFileSettings
@@ -151,6 +210,5 @@ namespace CodeBits
         public bool DetectEncoding { get; set; }
 
         public bool CaseSensitive { get; set; }
-
     }
 }
