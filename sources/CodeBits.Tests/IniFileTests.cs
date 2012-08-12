@@ -35,7 +35,7 @@ Weapons=Star, Fists";
             Assert.Equal("Jeevan", ini[1].Name);
             Assert.Equal("Merina", ini[2].Name);
 
-            IniFileSection section = ini[0];
+            IniFile.Section section = ini[0];
             Assert.Equal(2, section.Count);
             Assert.Equal("Jeevan", section["Player1"]);
             Assert.Equal("Merina", section["Player2"]);

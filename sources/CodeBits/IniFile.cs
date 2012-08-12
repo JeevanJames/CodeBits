@@ -29,7 +29,7 @@ using System.Text.RegularExpressions;
 
 namespace CodeBits
 {
-    public sealed class IniFile : KeyedCollection<string, IniFileSection>
+    public sealed class IniFile : KeyedCollection<string, IniFile.Section>
     {
         #region Construction
         public IniFile(string iniFilePath)
@@ -65,7 +65,7 @@ namespace CodeBits
 
         private void ParseIniFile(TextReader reader)
         {
-            IniFileSection currentSection = null;
+            Section currentSection = null;
             for (string line = reader.ReadLine(); line != null; line = reader.ReadLine())
             {
                 //Blank line
@@ -82,7 +82,7 @@ namespace CodeBits
                 Match sectionMatch = SectionPattern.Match(line);
                 if (sectionMatch.Success)
                 {
-                    currentSection = new IniFileSection(sectionMatch.Groups[1].Value);
+                    currentSection = new Section(sectionMatch.Groups[1].Value);
                     Add(currentSection);
                     continue;
                 }
@@ -123,17 +123,17 @@ namespace CodeBits
             if (writer == null)
                 throw new ArgumentNullException("writer");
 
-            foreach (IniFileSection section in this)
+            foreach (Section section in this)
             {
                 writer.WriteLine("[{0}]", section.Name);
-                foreach (IniFileProperty property in section)
+                foreach (Property property in section)
                     writer.WriteLine("{0}={1}", property.Key, property.Value);
                 writer.WriteLine();
             }
             writer.Flush();
         }
 
-        protected override string GetKeyForItem(IniFileSection item)
+        protected override string GetKeyForItem(Section item)
         {
             return item.Name;
         }
@@ -144,59 +144,64 @@ namespace CodeBits
         public const string PropertyFormat = PropertyKeyFormat + @"\s*=" + PropertyValueFormat;
         public const string PropertyKeyFormat = @"(\w[\w\s]+\w)";
         public const string PropertyValueFormat = @"(.*)";
-    }
 
-    public sealed class IniFileSection : Collection<IniFileProperty>
-    {
-        private readonly string _name;
-
-        public IniFileSection(string name)
+        #region Section
+        public sealed class Section : Collection<Property>
         {
-            _name = name;
-        }
+            private readonly string _name;
 
-        public string Name
-        {
-            get { return _name; }
-        }
-
-        public void Add(string key, string value)
-        {
-            Add(new IniFileProperty {
-                Key = key,
-                Value = value
-            });
-        }
-
-        public bool Remove(string key)
-        {
-            for (int i = 0; i < Count; i++)
+            public Section(string name)
             {
-                IniFileProperty property = this[i];
-                if (key == property.Key)
+                _name = name;
+            }
+
+            public string Name
+            {
+                get { return _name; }
+            }
+
+            public void Add(string key, string value)
+            {
+                Add(new Property {
+                    Key = key,
+                    Value = value
+                });
+            }
+
+            public bool Remove(string key)
+            {
+                for (int i = 0; i < Count; i++)
                 {
-                    RemoveAt(i);
-                    return true;
+                    Property property = this[i];
+                    if (key == property.Key)
+                    {
+                        RemoveAt(i);
+                        return true;
+                    }
                 }
+                return false;
             }
-            return false;
-        }
 
-        public string this[string key]
-        {
-            get
+            public string this[string key]
             {
-                IniFileProperty matchingProperty = this.FirstOrDefault(p => p.Key == key);
-                return matchingProperty != null ? matchingProperty.Value : null;
+                get
+                {
+                    Property matchingProperty = this.FirstOrDefault(p => p.Key == key);
+                    return matchingProperty != null ? matchingProperty.Value : null;
+                }
+                set { Add(key, value); }
             }
-            set { Add(key, value); }
         }
-    }
+        #endregion
 
-    public sealed class IniFileProperty
-    {
-        public string Key { get; set; }
-        public string Value { get; set; }
+        #region Property
+        public sealed class Property
+        {
+            public string Key { get; set; }
+            public string Value { get; set; }
+        }
+
+        #endregion
     }
 
     public sealed class IniFileSettings
