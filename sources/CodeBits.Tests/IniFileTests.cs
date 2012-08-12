@@ -7,8 +7,8 @@ namespace CodeBits.Tests
 {
     public sealed class IniFileTests
     {
-         private const string ValidIni =
-@"[Game State]
+
+        private const string ValidIni = @"[Game State]
 ; These are the players
 Player1=Jeevan
 Player2=Merina
@@ -30,13 +30,12 @@ Weapons=Star, Fists";
         {
             IniFile ini = IniFile.Load(ValidIni);
 
-            List<string> sections = ini.GetSections().ToList();
-            Assert.Equal(3, sections.Count);
-            Assert.Equal("Game State", sections[0]);
-            Assert.Equal("Jeevan", sections[1]);
-            Assert.Equal("Merina", sections[2]);
+            Assert.Equal(3, ini.Count);
+            Assert.Equal("Game State", ini[0].Name);
+            Assert.Equal("Jeevan", ini[1].Name);
+            Assert.Equal("Merina", ini[2].Name);
 
-            IReadOnlyDictionary<string, string> section = ini.GetSection(sections[0]);
+            IniFileSection section = ini[0];
             Assert.Equal(2, section.Count);
             Assert.Equal("Jeevan", section["Player1"]);
             Assert.Equal("Merina", section["Player2"]);
