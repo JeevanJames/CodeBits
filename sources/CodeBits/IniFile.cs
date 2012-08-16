@@ -31,32 +31,49 @@ namespace CodeBits
 {
     public sealed class IniFile : KeyedCollection<string, IniFile.Section>
     {
+        private readonly StringComparison _comparison;
+
         #region Construction
-        public IniFile(string iniFilePath)
+        public IniFile(IniLoadSettings settings = null)
+        {
+            settings = settings ?? IniLoadSettings.Default;
+            _comparison = settings.CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+        }
+
+        public IniFile(string iniFilePath, IniLoadSettings settings = null)
         {
             if (iniFilePath == null)
                 throw new ArgumentNullException("iniFilePath");
             if (!File.Exists(iniFilePath))
                 throw new ArgumentException(string.Format("INI file '{0}' does not exist", iniFilePath), "iniFilePath");
 
-            using (StreamReader reader = File.OpenText(iniFilePath))
+            settings = settings ?? IniLoadSettings.Default;
+            _comparison = settings.CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+
+            using (var reader = new StreamReader(iniFilePath, settings.Encoding ?? Encoding.UTF8, settings.DetectEncoding))
                 ParseIniFile(reader);
         }
 
-        public IniFile(Stream stream)
+        public IniFile(Stream stream, IniLoadSettings settings = null)
         {
             if (stream == null)
                 throw new ArgumentNullException("stream");
             if (!stream.CanRead)
                 throw new ArgumentException("Cannot read from specified stream", "stream");
 
-            using (var reader = new StreamReader(stream, true))
+            settings = settings ?? IniLoadSettings.Default;
+            _comparison = settings.CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+
+            using (var reader = new StreamReader(stream, settings.Encoding ?? Encoding.UTF8, settings.DetectEncoding))
                 ParseIniFile(reader);
         }
 
-        public static IniFile Load(string content)
+        public static IniFile Load(string content, IniLoadSettings settings = null)
         {
-            byte[] contentBytes = Encoding.UTF8.GetBytes(content);
+            settings = settings ?? IniLoadSettings.Default;
+            Encoding encoding = settings.Encoding ?? Encoding.UTF8;
+
+            byte[] contentBytes = encoding.GetBytes(content);
             var stream = new MemoryStream(contentBytes.Length);
             stream.Write(contentBytes, 0, contentBytes.Length);
             stream.Seek(0, SeekOrigin.Begin);
@@ -82,7 +99,10 @@ namespace CodeBits
                 Match sectionMatch = SectionPattern.Match(line);
                 if (sectionMatch.Success)
                 {
-                    currentSection = new Section(sectionMatch.Groups[1].Value);
+                    string sectionName = sectionMatch.Groups[1].Value;
+                    if (this.Any(section => section.Name.Equals(sectionName, _comparison)))
+                        throw new NotSupportedException(string.Format("Duplicate section found - '{0}'", sectionName));
+                    currentSection = new Section(sectionName);
                     Add(currentSection);
                     continue;
                 }
@@ -96,8 +116,10 @@ namespace CodeBits
 
                     if (currentSection == null)
                         throw new NotSupportedException(string.Format("Property '{0}' is not part of any section", propertyName));
-                    currentSection.Add(propertyName, propertyValue);
+                    if (currentSection.Any(property => property.Key.Equals(propertyName, _comparison)))
+                        throw new NotSupportedException(string.Format("Key '{0}' already exists in section '{1}'", propertyName, currentSection.Name));
 
+                    currentSection.Add(propertyName, propertyValue);
                     continue;
                 }
 
@@ -122,15 +144,30 @@ namespace CodeBits
         {
             if (writer == null)
                 throw new ArgumentNullException("writer");
+            InternalSave(writer.WriteLine, writer.WriteLine);
+            writer.Flush();
+        }
 
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            InternalSave((str, args) => sb.AppendFormat(str, args), () => sb.AppendLine());
+            return sb.ToString();
+        }
+
+        private void InternalSave(Action<string, object[]> writeAction, Action writeBlankLine)
+        {
             foreach (Section section in this)
             {
-                writer.WriteLine("[{0}]", section.Name);
+                writeAction("[{0}]", new object[] { section.Name });
+                writeBlankLine();
                 foreach (Property property in section)
-                    writer.WriteLine("{0}={1}", property.Key, property.Value);
-                writer.WriteLine();
+                {
+                    writeAction("{0}={1}", new object[] { property.Key, property.Value });
+                    writeBlankLine();
+                }
+                writeBlankLine();
             }
-            writer.Flush();
         }
 
         protected override string GetKeyForItem(Section item)
@@ -200,13 +237,12 @@ namespace CodeBits
             public string Key { get; set; }
             public string Value { get; set; }
         }
-
         #endregion
     }
 
-    public sealed class IniFileSettings
+    public sealed class IniLoadSettings
     {
-        public IniFileSettings()
+        public IniLoadSettings()
         {
             Encoding = Encoding.UTF8;
         }
@@ -215,5 +251,7 @@ namespace CodeBits
         public bool DetectEncoding { get; set; }
 
         public bool CaseSensitive { get; set; }
+
+        public static readonly IniLoadSettings Default = new IniLoadSettings();
     }
 }
