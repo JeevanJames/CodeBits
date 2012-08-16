@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.IO;
 
 using Xunit;
 
@@ -39,6 +38,29 @@ Weapons=Star, Fists";
             Assert.Equal(2, section.Count);
             Assert.Equal("Jeevan", section["Player1"]);
             Assert.Equal("Merina", section["Player2"]);
+        }
+
+        [Fact]
+        public void Save_tests()
+        {
+            var ini = new IniFile();
+
+            var section = new IniFile.Section("Test") {
+                { "Player1", "Jeevan" },
+                { "Player2", "Merina" }
+            };
+            ini.Add(section);
+
+            ini.Add(new IniFile.Section("Jeevan") {
+                { "Powers", "Superspeed,Super strength" },
+                { "Costume", "Scarlet" }
+            });
+
+            ini.Add(new IniFile.Section("Merina") {
+                { "Powers", "Stretchability, Invisibility" },
+                { "Costume", "Blue" }
+            });
+
         }
     }
 }
