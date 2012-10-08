@@ -51,9 +51,11 @@
     <Compile Include="OrderedObservableCollection.cs" />
     <Compile Include="PasswordGenerator.cs" />
     <Compile Include="Portable\ASCIIEncoding.cs" />
+    <Compile Include="Portable\ObservableCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaltedHash.cs" />
     <Compile Include="UniqueItemGenerator.cs" />
+    <Compile Include="WebScrapper.cs" />
     <Compile Include="Wildcards.cs" />
     <Compile Include="WindowsServiceRunner.cs" />
   </ItemGroup>
