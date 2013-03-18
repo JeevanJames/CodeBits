@@ -47,6 +47,7 @@
     <Compile Include="GeoDistance.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="ListExtensions.cs" />
+    <Compile Include="MruCollection.cs" />
     <Compile Include="OrderedCollection.cs" />
     <Compile Include="OrderedObservableCollection.cs" />
     <Compile Include="PasswordGenerator.cs" />
