@@ -1,7 +1,7 @@
 ﻿#region --- License & Copyright Notice ---
 /*
 CodeBits Code Snippets
-Copyright (c) 2012 Jeevan James
+Copyright (c) 2012-2017 Jeevan James
 All rights reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,7 @@ limitations under the License.
 */
 #endregion
 
-/* Documentation: http://codebits.codeplex.com/wikipage?title=ByteSizeFriendlyName */
+/* Documentation: https://github.com/JeevanJames/CodeBits/wiki/ByteSizeFriendlyName */
 
 using System;
 using System.Collections.Generic;
@@ -27,7 +27,12 @@ namespace CodeBits
 {
     public static partial class ByteSizeFriendlyName
     {
-        public static string Build(long bytes, FriendlyNameOptions options = null)
+        public static string Build(long bytes)
+        {
+            return Build(bytes, null);
+        }
+
+        public static string Build(long bytes, FriendlyNameOptions options)
         {
             if (bytes < 0)
                 throw new ArgumentOutOfRangeException("bytes", "bytes cannot be a negative value");

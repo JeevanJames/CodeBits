@@ -11,7 +11,7 @@ namespace CodeBits
     {
         private readonly List<Cookie> _cookies = new List<Cookie>();
 
-        public string Get(string url, IDictionary<string, string> queryStringParameters = null)
+        public string Get(string url, IDictionary<string, string> queryStringParameters)
         {
             if (url == null)
                 throw new ArgumentNullException("url");
@@ -20,7 +20,7 @@ namespace CodeBits
             return MakeRequest(fullUrl, null);
         }
 
-        public string Post(string url, IDictionary<string, string> formParameters, IDictionary<string, string> queryStringParameters = null)
+        public string Post(string url, IDictionary<string, string> formParameters, IDictionary<string, string> queryStringParameters)
         {
             if (url == null)
                 throw new ArgumentNullException("url");
@@ -98,7 +98,7 @@ namespace CodeBits
                 if (response.StatusCode == HttpStatusCode.Moved || response.StatusCode == HttpStatusCode.Redirect)
                 {
                     string location = response.Headers[HttpResponseHeader.Location];
-                    return Get(location);
+                    return Get(location, null);
                 }
 
                 using (Stream responseStream = response.GetResponseStream())

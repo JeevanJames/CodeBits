@@ -1,7 +1,7 @@
 ﻿#region --- License & Copyright Notice ---
 /*
 CodeBits Code Snippets
-Copyright (c) 2012 Jeevan James
+Copyright (c) 2012-2017 Jeevan James
 All rights reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,7 @@ limitations under the License.
 */
 #endregion
 
-/* Documentation: http://codebits.codeplex.com/wikipage?title=IniFile */
+/* Documentation: https://github.com/JeevanJames/CodeBits/wiki/IniFile */
 
 using System;
 using System.Collections.ObjectModel;
@@ -34,13 +34,17 @@ namespace CodeBits
         private readonly StringComparison _comparison;
 
         #region Construction
-        public IniFile(IniLoadSettings settings = null)
+        public IniFile() : this(null)
+        {
+        }
+
+        public IniFile(IniLoadSettings settings)
         {
             settings = settings ?? IniLoadSettings.Default;
             _comparison = settings.CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         }
 
-        public IniFile(string iniFilePath, IniLoadSettings settings = null)
+        public IniFile(string iniFilePath, IniLoadSettings settings)
         {
             if (iniFilePath == null)
                 throw new ArgumentNullException("iniFilePath");
@@ -54,7 +58,7 @@ namespace CodeBits
                 ParseIniFile(reader);
         }
 
-        public IniFile(Stream stream, IniLoadSettings settings = null)
+        public IniFile(Stream stream, IniLoadSettings settings)
         {
             if (stream == null)
                 throw new ArgumentNullException("stream");
@@ -68,7 +72,7 @@ namespace CodeBits
                 ParseIniFile(reader);
         }
 
-        public static IniFile Load(string content, IniLoadSettings settings = null)
+        public static IniFile Load(string content, IniLoadSettings settings)
         {
             settings = settings ?? IniLoadSettings.Default;
             Encoding encoding = settings.Encoding ?? Encoding.UTF8;
@@ -77,7 +81,7 @@ namespace CodeBits
             var stream = new MemoryStream(contentBytes.Length);
             stream.Write(contentBytes, 0, contentBytes.Length);
             stream.Seek(0, SeekOrigin.Begin);
-            return new IniFile(stream);
+            return new IniFile(stream, settings);
         }
 
         private void ParseIniFile(TextReader reader)
@@ -248,6 +252,7 @@ namespace CodeBits
         }
 
         public Encoding Encoding { get; set; }
+
         public bool DetectEncoding { get; set; }
 
         public bool CaseSensitive { get; set; }

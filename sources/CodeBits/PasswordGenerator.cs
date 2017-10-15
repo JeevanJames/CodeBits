@@ -1,7 +1,7 @@
 ﻿#region --- License & Copyright Notice ---
 /*
 CodeBits Code Snippets
-Copyright (c) 2012 Jeevan James
+Copyright (c) 2012-2017 Jeevan James
 All rights reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,8 +31,7 @@ namespace CodeBits
 {
     public static class PasswordGenerator
     {
-        public static string Generate(int length, PasswordCharacters allowedCharacters = PasswordCharacters.All,
-            IEnumerable<char> excludeCharacters = null)
+        public static string Generate(int length, PasswordCharacters allowedCharacters, IEnumerable<char> excludeCharacters)
         {
             if (length <= 0)
                 throw new ArgumentOutOfRangeException("length", "Password length must be greater than zero");
@@ -50,8 +49,7 @@ namespace CodeBits
             return new string(characters);
         }
 
-        public static SecureString GenerateSecure(int length, PasswordCharacters allowedCharacters = PasswordCharacters.All,
-            IEnumerable<char> excludedCharacters = null)
+        public static SecureString GenerateSecure(int length, PasswordCharacters allowedCharacters, IEnumerable<char> excludedCharacters)
         {
             if (length <= 0)
                 throw new ArgumentOutOfRangeException("length", "Password length must be greater than zero");

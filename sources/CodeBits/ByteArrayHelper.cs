@@ -1,7 +1,7 @@
 ﻿#region --- License & Copyright Notice ---
 /*
 CodeBits Code Snippets
-Copyright (c) 2012 Jeevan James
+Copyright (c) 2012-2017 Jeevan James
 All rights reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,7 @@ limitations under the License.
 */
 #endregion
 
-/* Documentation: http://codebits.codeplex.com/wikipage?title=ByteArrayHelper */
+/* Documentation: https://github.com/JeevanJames/CodeBits/wiki/ByteArrayHelper */
 
 using System;
 using System.Collections.Generic;
@@ -93,6 +93,11 @@ namespace CodeBits
             return !source.Any(b => b != 0);
         }
 
+        public static string ToString(this byte[] source)
+        {
+            return ToString(source, ",");
+        }
+
         /// <summary>
         ///     Creates a string from a byte array that concatenates each item in the array, separated by
         ///     the specified delimiter.
@@ -100,7 +105,7 @@ namespace CodeBits
         /// <param name="source"> The byte array from which to create the string. </param>
         /// <param name="delimiter"> The optional delimiter to separate each item in the array. Default to ',' if not specified. </param>
         /// <returns> The combined string </returns>
-        public static string ToString(this byte[] source, string delimiter = ",")
+        public static string ToString(this byte[] source, string delimiter)
         {
             if (source == null)
                 return null;

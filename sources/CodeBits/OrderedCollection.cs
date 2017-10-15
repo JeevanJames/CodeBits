@@ -1,7 +1,7 @@
 ﻿#region --- License & Copyright Notice ---
 /*
 CodeBits Code Snippets
-Copyright (c) 2012 Jeevan James
+Copyright (c) 2012-2017 Jeevan James
 All rights reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,44 +33,39 @@ namespace CodeBits
     public partial class OrderedCollection<T> : Collection<T>
     {
         private readonly IComparer<T> _comparer;
-        private readonly bool _allowDuplicates;
-        private readonly bool _reverseOrder;
+        private readonly OrderedCollectionOptions _options;
 
         /// <summary>
         /// Initializes a new instance of the OrderedCollection.
         /// </summary>
-        public OrderedCollection() : this(false, false)
+        public OrderedCollection() : this(null)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the OrderedCollection
         /// </summary>
-        /// <param name="allowDuplicates">True if the collection should allow duplicate values</param>
-        /// <param name="reverseOrder">True to reverse the order in which the items are sorted</param>
-        public OrderedCollection(bool allowDuplicates = false, bool reverseOrder = false)
+        /// <param name="options">Options that control the behavior of the collection</param>
+        public OrderedCollection(OrderedCollectionOptions options)
         {
             Type comparableType = typeof(IComparable<>).MakeGenericType(typeof(T));
             if (!comparableType.IsAssignableFrom(typeof(T))) 
                 throw new ArgumentException("Generic type should implement IComparable<>");
             _comparer = new ComparableComparer<T>();
-            _allowDuplicates = allowDuplicates;
-            _reverseOrder = reverseOrder;
+            _options = options ?? new OrderedCollectionOptions();
         }
 
         /// <summary>
         /// Initializes a new instance of the OrderedCollection using an IComparer implementation.
         /// </summary>
         /// <param name="comparer">IComparer implementation used for the item comparisons during ordering</param>
-        /// <param name="allowDuplicates">True if the collection should allow duplicate values</param>
-        /// <param name="reverseOrder">True to reverse the order in which the items are sorted</param>
-        public OrderedCollection(IComparer<T> comparer, bool allowDuplicates = false, bool reverseOrder = false)
+        /// <param name="options">Options that control the behavior of the collection</param>
+        public OrderedCollection(IComparer<T> comparer, OrderedCollectionOptions options)
         {
             if (comparer == null)
                 throw new ArgumentNullException("comparer");
             _comparer = comparer;
-            _allowDuplicates = allowDuplicates;
-            _reverseOrder = reverseOrder;
+            _options = options ?? new OrderedCollectionOptions();
         }
 
         /// <summary>
@@ -78,15 +73,13 @@ namespace CodeBits
         /// the comparison logic.
         /// </summary>
         /// <param name="comparison">The comparison delegate used for the item comparisons during ordering</param>
-        /// <param name="allowDuplicates">True if the collection should allow duplicate values</param>
-        /// <param name="reverseOrder">True to reverse the order in which the items are sorted</param>
-        public OrderedCollection(Comparison<T> comparison, bool allowDuplicates = false, bool reverseOrder = false)
+        /// <param name="options">Options that control the behavior of the collection</param>
+        public OrderedCollection(Comparison<T> comparison, OrderedCollectionOptions options)
         {
             if (comparison == null)
                 throw new ArgumentNullException("comparison");
             _comparer = new ComparisonComparer<T>(comparison);
-            _allowDuplicates = allowDuplicates;
-            _reverseOrder = reverseOrder;
+            _options = options ?? new OrderedCollectionOptions();
         }
 
         /// <summary>
@@ -94,7 +87,7 @@ namespace CodeBits
         /// </summary>
         public bool AllowDuplicates
         {
-            get { return _allowDuplicates; }
+            get { return _options.AllowDuplicates; }
         }
 
         /// <summary>
@@ -102,10 +95,10 @@ namespace CodeBits
         /// </summary>
         public bool ReverseOrder
         {
-            get { return _reverseOrder; }
+            get { return _options.ReverseOrder; }
         }
 
-        protected override sealed void InsertItem(int index, T item)
+        protected sealed override void InsertItem(int index, T item)
         {
             int insertIndex = GetInsertIndex(item);
             if (insertIndex < 0)
@@ -113,7 +106,7 @@ namespace CodeBits
             base.InsertItem(insertIndex, item);
         }
 
-        protected override sealed void SetItem(int index, T item)
+        protected sealed override void SetItem(int index, T item)
         {
             RemoveItem(index);
             int insertIndex = GetInsertIndex(item);
@@ -137,7 +130,7 @@ namespace CodeBits
 
         private int ReverseComparisonIfNeeded(int comparison)
         {
-            return _reverseOrder ? -(comparison) : comparison;
+            return _options.ReverseOrder ? -(comparison) : comparison;
         }
 
         private int GetInsertIndex(T item)
@@ -152,12 +145,12 @@ namespace CodeBits
         //value specified by the SimpleAlgorithmThreshold constant.
         private int GetInsertIndexSimple(T item)
         {
-            for (int i = 0; i < Items.Count; i++)
+            for (var i = 0; i < Items.Count; i++)
             {
                 T existingItem = Items[i];
                 int comparison = ReverseComparisonIfNeeded(Compare(existingItem, item));
                 if (comparison == 0)
-                    return _allowDuplicates ? i : -1;
+                    return _options.AllowDuplicates ? i : -1;
                 if (comparison > 0)
                     return i;
             }
@@ -175,7 +168,7 @@ namespace CodeBits
                 int pivotIndex = (maxIndex + minIndex) / 2;
                 int comparison = ReverseComparisonIfNeeded(Compare(item, Items[pivotIndex]));
                 if (comparison == 0)
-                    return _allowDuplicates ? pivotIndex : -1;
+                    return _options.AllowDuplicates ? pivotIndex : -1;
                 if (comparison < 0)
                     maxIndex = pivotIndex - 1;
                 else
@@ -216,5 +209,22 @@ namespace CodeBits
                 return _comparison(x, y);
             }
         }
+    }
+
+    public sealed class OrderedCollectionOptions
+    {
+        public OrderedCollectionOptions()
+        {
+        }
+
+        public OrderedCollectionOptions(bool allowDuplicates, bool reverseOrder)
+        {
+            AllowDuplicates = allowDuplicates;
+            ReverseOrder = reverseOrder;
+        }
+
+        public bool AllowDuplicates { get; set; }
+
+        public bool ReverseOrder { get; set; }
     }
 }

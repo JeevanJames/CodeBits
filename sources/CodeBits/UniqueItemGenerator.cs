@@ -1,7 +1,7 @@
 ﻿#region --- License & Copyright Notice ---
 /*
 CodeBits Code Snippets
-Copyright (c) 2012 Jeevan James
+Copyright (c) 2012-2017 Jeevan James
 All rights reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,13 @@ namespace CodeBits
 {
     public static class UniqueItemGenerator
     {
-        public static string GetNextUniqueItem(IEnumerable<string> items, string itemName, string duplicateItemFormat = "{0} - {1}", StringComparison comparison = StringComparison.OrdinalIgnoreCase)
+        public static string GetNextUniqueItem(IEnumerable<string> items, string itemName)
+        {
+            return GetNextUniqueItem(items, itemName, "{0} - {1}", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static string GetNextUniqueItem(IEnumerable<string> items, string itemName,
+            string duplicateItemFormat, StringComparison comparison)
         {
             if (items == null)
                 throw new ArgumentNullException("items");
@@ -53,7 +59,12 @@ namespace CodeBits
             return null;
         }
 
-        public static string GetUniqueFileName(string directory, string fileName, string fileNameFormat = "{0} - {1}")
+        public static string GetUniqueFileName(string directory, string fileName)
+        {
+            return GetUniqueFileName(directory, fileName, "{0} - {1}");
+        }
+
+        public static string GetUniqueFileName(string directory, string fileName, string fileNameFormat)
         {
             if (directory == null)
                 throw new ArgumentNullException("directory");
@@ -62,11 +73,17 @@ namespace CodeBits
             if (!Directory.Exists(directory))
                 throw new DirectoryNotFoundException(string.Format("The directory '{0}' does not exist", directory));
 
-            IEnumerable<string> files = Directory.EnumerateFiles(directory, "*" + fileName + "*", SearchOption.TopDirectoryOnly);
-            return GetNextUniqueItem(files, fileName, fileNameFormat);
+            IEnumerable<string> files =
+                Directory.EnumerateFiles(directory, "*" + fileName + "*", SearchOption.TopDirectoryOnly);
+            return GetNextUniqueItem(files, fileName, fileNameFormat, StringComparison.OrdinalIgnoreCase);
         }
 
-        public static string GetUniqueFileName(DirectoryInfo directory, string fileName, string fileNameFormat = "{0} - {1}")
+        public static string GetUniqueFileName(DirectoryInfo directory, string fileName)
+        {
+            return GetUniqueFileName(directory.FullName, fileName, "{0} - {1}");
+        }
+
+        public static string GetUniqueFileName(DirectoryInfo directory, string fileName, string fileNameFormat)
         {
             return GetUniqueFileName(directory.FullName, fileName, fileNameFormat);
         }
