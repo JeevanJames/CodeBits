@@ -10,6 +10,12 @@ namespace CodeBits.Tests
     public sealed class EnumIteratorTests
     {
         [Fact]
+        public void Ctor_should_throw_if_null_is_specified()
+        {
+            Assert.Throws<ArgumentNullException>(() => EnumIterator.For(null));
+        }
+
+        [Fact]
         public void Ctor_should_throw_if_non_enum_type_is_specified()
         {
             Assert.Throws<ArgumentException>(() => EnumIterator.For<int>());
@@ -40,13 +46,13 @@ namespace CodeBits.Tests
         {
             List<DayOfWeek> daysOfWeek = EnumIterator.For<DayOfWeek>().ToList();
             Assert.Equal(7, daysOfWeek.Count);
-            Assert.Equal(DayOfWeek.Sunday, daysOfWeek.ElementAt(0));
-            Assert.Equal(DayOfWeek.Monday, daysOfWeek.ElementAt(1));
-            Assert.Equal(DayOfWeek.Tuesday, daysOfWeek.ElementAt(2));
-            Assert.Equal(DayOfWeek.Wednesday, daysOfWeek.ElementAt(3));
-            Assert.Equal(DayOfWeek.Thursday, daysOfWeek.ElementAt(4));
-            Assert.Equal(DayOfWeek.Friday, daysOfWeek.ElementAt(5));
-            Assert.Equal(DayOfWeek.Saturday, daysOfWeek.ElementAt(6));
+            Assert.Equal(DayOfWeek.Sunday, daysOfWeek[0]);
+            Assert.Equal(DayOfWeek.Monday, daysOfWeek[1]);
+            Assert.Equal(DayOfWeek.Tuesday, daysOfWeek[2]);
+            Assert.Equal(DayOfWeek.Wednesday, daysOfWeek[3]);
+            Assert.Equal(DayOfWeek.Thursday, daysOfWeek[4]);
+            Assert.Equal(DayOfWeek.Friday, daysOfWeek[5]);
+            Assert.Equal(DayOfWeek.Saturday, daysOfWeek[6]);
         }
 
         [Fact]
@@ -54,13 +60,13 @@ namespace CodeBits.Tests
         {
             List<DayOfWeek> daysOfWeek = EnumIterator.For(typeof(DayOfWeek)).OfType<DayOfWeek>().ToList();
             Assert.Equal(7, daysOfWeek.Count);
-            Assert.Equal(DayOfWeek.Sunday, daysOfWeek.ElementAt(0));
-            Assert.Equal(DayOfWeek.Monday, daysOfWeek.ElementAt(1));
-            Assert.Equal(DayOfWeek.Tuesday, daysOfWeek.ElementAt(2));
-            Assert.Equal(DayOfWeek.Wednesday, daysOfWeek.ElementAt(3));
-            Assert.Equal(DayOfWeek.Thursday, daysOfWeek.ElementAt(4));
-            Assert.Equal(DayOfWeek.Friday, daysOfWeek.ElementAt(5));
-            Assert.Equal(DayOfWeek.Saturday, daysOfWeek.ElementAt(6));
+            Assert.Equal(DayOfWeek.Sunday, daysOfWeek[0]);
+            Assert.Equal(DayOfWeek.Monday, daysOfWeek[1]);
+            Assert.Equal(DayOfWeek.Tuesday, daysOfWeek[2]);
+            Assert.Equal(DayOfWeek.Wednesday, daysOfWeek[3]);
+            Assert.Equal(DayOfWeek.Thursday, daysOfWeek[4]);
+            Assert.Equal(DayOfWeek.Friday, daysOfWeek[5]);
+            Assert.Equal(DayOfWeek.Saturday, daysOfWeek[6]);
         }
 
         [Fact]

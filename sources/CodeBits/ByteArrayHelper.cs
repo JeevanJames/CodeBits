@@ -90,12 +90,7 @@ namespace CodeBits
         {
             if (source == null || source.Length == 0)
                 return true;
-            return !source.Any(b => b != 0);
-        }
-
-        public static string ToString(this byte[] source)
-        {
-            return ToString(source, ",");
+            return source.All(b => b == 0);
         }
 
         /// <summary>

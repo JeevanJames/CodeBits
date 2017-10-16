@@ -8,7 +8,7 @@ namespace CodeBits.Tests
     {
         private readonly byte[] _nullArray = null;
         private readonly byte[] _emptyArray = new byte[0];
-        private readonly byte[] _zeroedArray = new byte[] { 0, 0, 0, 0 };
+        private readonly byte[] _zeroedArray = { 0, 0, 0, 0 };
 
         [Fact]
         public void Fill_tests()
