@@ -12,7 +12,7 @@ namespace CodeBits.Tests
         {
             Assert.Throws<ArgumentNullException>(() => UniqueItemGenerator.GetNextUniqueItem(null, "Test"));
             Assert.Throws<ArgumentNullException>(() => UniqueItemGenerator.GetNextUniqueItem(Enumerable.Empty<string>(), null));
-            Assert.Throws<ArgumentNullException>(() => UniqueItemGenerator.GetNextUniqueItem(Enumerable.Empty<string>(), "Test", null));
+            Assert.Throws<ArgumentNullException>(() => UniqueItemGenerator.GetNextUniqueItem(Enumerable.Empty<string>(), "Test", null, StringComparison.OrdinalIgnoreCase));
         }
 
         [Fact]

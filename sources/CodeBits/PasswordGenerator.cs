@@ -18,7 +18,7 @@ limitations under the License.
 */
 #endregion
 
-/* Documentation: http://codebits.codeplex.com/wikipage?title=PasswordGenerator&referringTitle=Home */
+/* Documentation: https://github.com/JeevanJames/CodeBits/wiki/PasswordGenerator */
 
 using System;
 using System.Collections.Generic;
@@ -29,46 +29,88 @@ using System.Text;
 
 namespace CodeBits
 {
+    /// <summary>
+    ///     Provides static methods to generate random passwords.
+    /// </summary>
     public static class PasswordGenerator
     {
-        public static string Generate(int length, PasswordCharacters allowedCharacters, IEnumerable<char> excludeCharacters)
+        /// <summary>
+        /// Generates a random password of the specified length.
+        /// </summary>
+        /// <param name="length">The length of the password to generate</param>
+        /// <returns>The generated password</returns>
+        public static string Generate(int length)
         {
-            if (length <= 0)
-                throw new ArgumentOutOfRangeException("length", "Password length must be greater than zero");
-
-            var randomBytes = new byte[length];
-            var randomNumberGenerator = new RNGCryptoServiceProvider();
-            randomNumberGenerator.GetBytes(randomBytes);
-
-            string allowedCharactersString = GenerateAllowedCharactersString(allowedCharacters, excludeCharacters);
-            int allowedCharactersCount = allowedCharactersString.Length;
-
-            var characters = new char[length];
-            for (int i = 0; i < length; i++)
-                characters[i] = allowedCharactersString[randomBytes[i] % allowedCharactersCount];
-            return new string(characters);
+            return Generate(length, PasswordCharacters.All, null);
         }
 
-        public static SecureString GenerateSecure(int length, PasswordCharacters allowedCharacters, IEnumerable<char> excludedCharacters)
+        /// <summary>
+        ///     Generates a random password based on the provided criteria.
+        /// </summary>
+        /// <param name="length">The length of the password to generate</param>
+        /// <param name="allowedCharacters">Set of allowed characters in the generated password</param>
+        /// <param name="excludeCharacters">Set of disallowed characters in the generated password</param>
+        /// <returns>The generated password</returns>
+        public static string Generate(int length, PasswordCharacters allowedCharacters,
+            IEnumerable<char> excludeCharacters)
         {
-            if (length <= 0)
-                throw new ArgumentOutOfRangeException("length", "Password length must be greater than zero");
+            char[] password = InternalGenerate(length, allowedCharacters, excludeCharacters, () => new char[length],
+                (pw, ch, index) => pw[index] = ch);
+            return new string(password);
+        }
 
-            var randomBytes = new byte[length];
-            var randomNumberGenerator = new RNGCryptoServiceProvider();
-            randomNumberGenerator.GetBytes(randomBytes);
+        /// <summary>
+        /// Generates a random password of the specified length and returns it as a <see cref="SecureString" />
+        /// </summary>
+        /// <param name="length">The length of the password to generate</param>
+        /// <returns>The generated password as a <see cref="SecureString" /></returns>
+        public static SecureString GenerateSecure(int length)
+        {
+            return GenerateSecure(length, PasswordCharacters.All, null);
+        }
 
-            string allowedCharactersString = GenerateAllowedCharactersString(allowedCharacters, excludedCharacters);
-            int allowedCharactersCount = allowedCharactersString.Length;
-
-            var password = new SecureString();
-            for (int i = 0; i < length; i++)
-                password.AppendChar(allowedCharactersString[randomBytes[i] % allowedCharactersCount]);
+        /// <summary>
+        ///     Generates a random password based on the provided criteria and returns it as a <see cref="SecureString" />
+        /// </summary>
+        /// <param name="length">The length of the password to generate</param>
+        /// <param name="allowedCharacters">Set of allowed characters in the generated password</param>
+        /// <param name="excludeCharacters">Set of disallowed characters in the generated password</param>
+        /// <returns>The generated password as a <see cref="SecureString" /></returns>
+        public static SecureString GenerateSecure(int length, PasswordCharacters allowedCharacters,
+            IEnumerable<char> excludeCharacters)
+        {
+            SecureString password = InternalGenerate(length, allowedCharacters, excludeCharacters, () => new SecureString(),
+                (pw, ch, index) => pw.AppendChar(ch));
             password.MakeReadOnly();
             return password;
         }
 
-        private static string GenerateAllowedCharactersString(PasswordCharacters characters, IEnumerable<char> excludeCharacters)
+        // Common method to generate the password for strings and SecureStrings.
+        private static T InternalGenerate<T>(int length, PasswordCharacters allowedCharacters,
+            IEnumerable<char> excludeCharacters, Func<T> initialValue, Action<T, char, int> appender)
+        {
+            if (length <= 0)
+                throw new ArgumentOutOfRangeException("length", "Password length must be greater than zero");
+
+            // Create a byte array the same length as the expected password and populate it with
+            // random bytes
+            var randomBytes = new byte[length];
+            var randomNumberGenerator = new RNGCryptoServiceProvider();
+            randomNumberGenerator.GetBytes(randomBytes);
+
+            // Create a string of all the characters allowed in the password
+            string allowedCharactersString = GenerateAllowedCharactersString(allowedCharacters, excludeCharacters);
+            int allowedCharactersCount = allowedCharactersString.Length;
+
+            // Create the password
+            T password = initialValue();
+            for (int i = 0; i < length; i++)
+                appender(password, allowedCharactersString[randomBytes[i] % allowedCharactersCount], i);
+            return password;
+        }
+
+        private static string GenerateAllowedCharactersString(PasswordCharacters characters,
+            IEnumerable<char> excludeCharacters)
         {
             var allowedCharactersString = new StringBuilder();
             foreach (KeyValuePair<PasswordCharacters, string> type in AllowedPasswordCharacters)
@@ -89,7 +131,7 @@ namespace CodeBits
                 { PasswordCharacters.UppercaseLetters, "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
                 { PasswordCharacters.Numbers, "0123456789" },
                 { PasswordCharacters.Punctuations, @"~`!@#$%^&*()_-+={[}]|\:;""'<,>.?/" },
-                { PasswordCharacters.Space, " " },
+                { PasswordCharacters.Space, " " }
             };
     }
 
@@ -103,6 +145,6 @@ namespace CodeBits
         Space = 0x10,
         AllLetters = LowercaseLetters | UppercaseLetters,
         AlphaNumeric = AllLetters | Numbers,
-        All = AllLetters | Numbers | Punctuations | Space,
+        All = AllLetters | Numbers | Punctuations | Space
     }
 }

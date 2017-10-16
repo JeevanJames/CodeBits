@@ -23,12 +23,12 @@ namespace CodeBits.Tests
         [Fact]
         public void Verify_non_default_ctors()
         {
-            Assert.Throws<ArgumentNullException>(() => new OrderedCollection<string>((IComparer<string>)null));
-            Assert.Throws<ArgumentNullException>(() => new OrderedCollection<string>((Comparison<string>)null));
+            Assert.Throws<ArgumentNullException>(() => new OrderedCollection<string>((IComparer<string>)null, null));
+            Assert.Throws<ArgumentNullException>(() => new OrderedCollection<string>((Comparison<string>)null, null));
         }
 
         [Theory]
-        [PropertyData("Items")]
+        [PropertyData(nameof(Items))]
         public void Verify_inserts(string[] items)
         {
             var collection = new OrderedCollection<string>();
@@ -37,21 +37,21 @@ namespace CodeBits.Tests
                 string item = items[i];
                 collection.Add(item);
                 Assert.Equal(i + 1, collection.Count);
-                AssertCollection(collection, (x, y) => string.Compare(x, y) <= 0);
+                AssertCollection(collection, (x, y) => string.CompareOrdinal(x, y) <= 0);
             }
         }
 
         [Theory]
-        [PropertyData("Items")]
+        [PropertyData(nameof(Items))]
         public void Verify_inserts_reverse(string[] items)
         {
-            var collection = new OrderedCollection<string>(allowDuplicates: false, reverseOrder: true);
+            var collection = new OrderedCollection<string>(new OrderedCollectionOptions(false, true));
             for (int i = 0; i < items.Length; i++)
             {
                 string item = items[i];
                 collection.Add(item);
                 Assert.Equal(i + 1, collection.Count);
-                AssertCollection(collection, (x, y) => string.Compare(x, y) >= 0);
+                AssertCollection(collection, (x, y) => string.CompareOrdinal(x, y) >= 0);
             }
         }
 

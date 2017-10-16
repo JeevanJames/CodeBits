@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-using Xunit;
+﻿using Xunit;
 
 namespace CodeBits.Tests
 {
@@ -27,7 +25,7 @@ Weapons=Star, Fists";
         [Fact]
         public void Basic_tests()
         {
-            IniFile ini = IniFile.Load(ValidIni);
+            IniFile ini = IniFile.Load(ValidIni, null);
 
             Assert.Equal(3, ini.Count);
             Assert.Equal("Game State", ini[0].Name);
