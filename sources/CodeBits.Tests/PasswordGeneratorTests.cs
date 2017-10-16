@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 using System.Security;
 
 using Xunit;
-using Xunit.Extensions;
 
 namespace CodeBits.Tests
 {
@@ -58,7 +57,7 @@ namespace CodeBits.Tests
             }
         }
 
-        private string SecureStringToString(SecureString secureString)
+        private static string SecureStringToString(SecureString secureString)
         {
             IntPtr valuePtr = IntPtr.Zero;
             try

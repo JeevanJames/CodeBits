@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -39,40 +38,40 @@ namespace CodeBits.Tests
         [Fact]
         public void Enumerator_should_return_all_enum_values_in_correct_order()
         {
-            var daysOfWeek = EnumIterator.For<DayOfWeek>();
-            Assert.Equal(daysOfWeek.Count(), 7);
-            Assert.Equal(daysOfWeek.ElementAt(0), DayOfWeek.Sunday);
-            Assert.Equal(daysOfWeek.ElementAt(1), DayOfWeek.Monday);
-            Assert.Equal(daysOfWeek.ElementAt(2), DayOfWeek.Tuesday);
-            Assert.Equal(daysOfWeek.ElementAt(3), DayOfWeek.Wednesday);
-            Assert.Equal(daysOfWeek.ElementAt(4), DayOfWeek.Thursday);
-            Assert.Equal(daysOfWeek.ElementAt(5), DayOfWeek.Friday);
-            Assert.Equal(daysOfWeek.ElementAt(6), DayOfWeek.Saturday);
+            List<DayOfWeek> daysOfWeek = EnumIterator.For<DayOfWeek>().ToList();
+            Assert.Equal(7, daysOfWeek.Count);
+            Assert.Equal(DayOfWeek.Sunday, daysOfWeek.ElementAt(0));
+            Assert.Equal(DayOfWeek.Monday, daysOfWeek.ElementAt(1));
+            Assert.Equal(DayOfWeek.Tuesday, daysOfWeek.ElementAt(2));
+            Assert.Equal(DayOfWeek.Wednesday, daysOfWeek.ElementAt(3));
+            Assert.Equal(DayOfWeek.Thursday, daysOfWeek.ElementAt(4));
+            Assert.Equal(DayOfWeek.Friday, daysOfWeek.ElementAt(5));
+            Assert.Equal(DayOfWeek.Saturday, daysOfWeek.ElementAt(6));
         }
 
         [Fact]
         public void Non_generic_enumerator_should_return_all_enum_values_in_correct_order()
         {
-            var daysOfWeek = EnumIterator.For(typeof(DayOfWeek)).OfType<DayOfWeek>();
-            Assert.Equal(daysOfWeek.Count(), 7);
-            Assert.Equal(daysOfWeek.ElementAt(0), DayOfWeek.Sunday);
-            Assert.Equal(daysOfWeek.ElementAt(1), DayOfWeek.Monday);
-            Assert.Equal(daysOfWeek.ElementAt(2), DayOfWeek.Tuesday);
-            Assert.Equal(daysOfWeek.ElementAt(3), DayOfWeek.Wednesday);
-            Assert.Equal(daysOfWeek.ElementAt(4), DayOfWeek.Thursday);
-            Assert.Equal(daysOfWeek.ElementAt(5), DayOfWeek.Friday);
-            Assert.Equal(daysOfWeek.ElementAt(6), DayOfWeek.Saturday);
+            List<DayOfWeek> daysOfWeek = EnumIterator.For(typeof(DayOfWeek)).OfType<DayOfWeek>().ToList();
+            Assert.Equal(7, daysOfWeek.Count);
+            Assert.Equal(DayOfWeek.Sunday, daysOfWeek.ElementAt(0));
+            Assert.Equal(DayOfWeek.Monday, daysOfWeek.ElementAt(1));
+            Assert.Equal(DayOfWeek.Tuesday, daysOfWeek.ElementAt(2));
+            Assert.Equal(DayOfWeek.Wednesday, daysOfWeek.ElementAt(3));
+            Assert.Equal(DayOfWeek.Thursday, daysOfWeek.ElementAt(4));
+            Assert.Equal(DayOfWeek.Friday, daysOfWeek.ElementAt(5));
+            Assert.Equal(DayOfWeek.Saturday, daysOfWeek.ElementAt(6));
         }
 
         [Fact]
         public void Basic_linq_functions_work_on_the_iterator()
         {
-            var enumerable = EnumIterator.For<DayOfWeek>();
+            List<DayOfWeek> enumerable = EnumIterator.For<DayOfWeek>().ToList();
             Assert.Equal(DayOfWeek.Sunday, enumerable.First());
             Assert.Equal(DayOfWeek.Saturday, enumerable.Last());
             Assert.Equal(DayOfWeek.Wednesday, enumerable.Skip(3).Take(1).Single());
             Assert.True(enumerable.Any());
-            Assert.Equal(7, enumerable.Count());
+            Assert.Equal(7, enumerable.Count);
         }
     }
 }

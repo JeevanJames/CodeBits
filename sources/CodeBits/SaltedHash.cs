@@ -28,12 +28,12 @@ using System.Text;
 namespace CodeBits
 {
     /// <summary>
-    /// Encapsulates the functionality required to compute and verify salted hashes.
+    ///     Encapsulates the functionality required to compute and verify salted hashes.
     /// </summary>
     public sealed partial class SaltedHash
     {
         /// <summary>
-        /// Computes a salted hash from the given password.
+        ///     Computes a salted hash from the given password.
         /// </summary>
         /// <param name="password">The password from which to compute the salted hash</param>
         /// <returns>A SaltedHash instance containing the hash and salt values</returns>
@@ -41,19 +41,19 @@ namespace CodeBits
         {
             var saltBytes = new byte[32];
             new RNGCryptoServiceProvider().GetNonZeroBytes(saltBytes);
-            string salt = ConvertToBase64String(saltBytes);
+            string salt = Convert.ToBase64String(saltBytes);
             byte[] passwordAndSaltBytes = Concat(password, saltBytes);
             string hash = ComputeHash(passwordAndSaltBytes);
             return new SaltedHash(hash, salt);
         }
 
         /// <summary>
-        /// Verifies that the a password matches the specified hash and salt values
+        ///     Verifies that the a password matches the specified hash and salt values
         /// </summary>
         /// <param name="password">The password to check</param>
         /// <param name="hash">The hash value to check against</param>
         /// <param name="salt">The salt value to check against</param>
-        /// <returns></returns>
+        /// <returns>True if the specified password matches the salted hash</returns>
         public static bool Verify(string password, string hash, string salt)
         {
             byte[] saltBytes = Convert.FromBase64String(salt);
@@ -64,12 +64,7 @@ namespace CodeBits
 
         private static string ComputeHash(byte[] bytes)
         {
-            return ConvertToBase64String(SHA256.Create().ComputeHash(bytes));
-        }
-
-        private static string ConvertToBase64String(byte[] bytes)
-        {
-            return Convert.ToBase64String(bytes);
+            return Convert.ToBase64String(SHA256.Create().ComputeHash(bytes));
         }
 
         private static byte[] Concat(string password, byte[] saltBytes)
@@ -91,7 +86,7 @@ namespace CodeBits
         }
 
         /// <summary>
-        /// The computed hash value as a base-64 encoded string
+        ///     The computed hash value as a base-64 encoded string
         /// </summary>
         public string Hash
         {
@@ -99,7 +94,7 @@ namespace CodeBits
         }
 
         /// <summary>
-        /// The computed salt value as a base-64 encoded string
+        ///     The computed salt value as a base-64 encoded string
         /// </summary>
         public string Salt
         {

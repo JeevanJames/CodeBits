@@ -72,7 +72,7 @@ namespace CodeBits.Tests
         [Fact]
         public void ToString_tests()
         {
-            Assert.Equal(null, _nullArray.ToString(null));
+            Assert.Null(_nullArray.ToString(null));
             Assert.Equal(string.Empty, _emptyArray.ToString(null));
 
             Assert.Throws<ArgumentNullException>(() => _zeroedArray.ToString(null));

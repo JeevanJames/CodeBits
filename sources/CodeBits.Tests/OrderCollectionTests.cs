@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 using Xunit;
-using Xunit.Extensions;
 
 namespace CodeBits.Tests
 {
@@ -16,7 +15,11 @@ namespace CodeBits.Tests
             Assert.Empty(collection);
             Assert.False(collection.AllowDuplicates);
             Assert.False(collection.ReverseOrder);
+        }
 
+        [Fact]
+        public void Default_ctor_throws_when_type_is_not_IComparable()
+        {
             Assert.Throws<ArgumentException>(() => new OrderedCollection<DayOfWeek>());
         }
 
@@ -28,7 +31,7 @@ namespace CodeBits.Tests
         }
 
         [Theory]
-        [PropertyData(nameof(Items))]
+        [MemberData(nameof(Items))]
         public void Verify_inserts(string[] items)
         {
             var collection = new OrderedCollection<string>();
@@ -42,7 +45,7 @@ namespace CodeBits.Tests
         }
 
         [Theory]
-        [PropertyData(nameof(Items))]
+        [MemberData(nameof(Items))]
         public void Verify_inserts_reverse(string[] items)
         {
             var collection = new OrderedCollection<string>(new OrderedCollectionOptions(false, true));
