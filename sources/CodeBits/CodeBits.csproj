@@ -42,20 +42,9 @@
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ByteArrayHelper.cs" />
-    <Compile Include="ByteSizeFriendlyName.cs" />
-    <Compile Include="EnumIterator.cs" />
-    <Compile Include="GeoDistance.cs" />
-    <Compile Include="IniFile.cs" />
-    <Compile Include="ListExtensions.cs" />
-    <Compile Include="MruCollection.cs" />
     <Compile Include="OrderedCollection.cs" />
     <Compile Include="OrderedObservableCollection.cs" />
-    <Compile Include="PasswordGenerator.cs" />
-    <Compile Include="Portable\ASCIIEncoding.cs" />
-    <Compile Include="Portable\ObservableCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SaltedHash.cs" />
     <Compile Include="UniqueItemGenerator.cs" />
     <Compile Include="WebScrapper.cs" />
     <Compile Include="Wildcards.cs" />

@@ -1,16 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeBits", "CodeBits\CodeBits.csproj", "{3F59A0C2-0370-41ED-8469-272C37E2DB00}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeBits.Tests", "CodeBits.Tests\CodeBits.Tests.csproj", "{62158B17-7C87-464F-8B08-E3B4E8379A79}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{0BCDD15F-6099-496B-B7FE-F5B7248BE1C0}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-		.nuget\nuget.exe = .nuget\nuget.exe
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeBits_Net30", "CodeBits_Net30\CodeBits_Net30.csproj", "{10CC64C4-254B-4D7D-828D-0965127BE135}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +23,10 @@ Global
 		{62158B17-7C87-464F-8B08-E3B4E8379A79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62158B17-7C87-464F-8B08-E3B4E8379A79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62158B17-7C87-464F-8B08-E3B4E8379A79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10CC64C4-254B-4D7D-828D-0965127BE135}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10CC64C4-254B-4D7D-828D-0965127BE135}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10CC64C4-254B-4D7D-828D-0965127BE135}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10CC64C4-254B-4D7D-828D-0965127BE135}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
