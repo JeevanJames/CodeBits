@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Shouldly;
+
 using Xunit;
 
 namespace CodeBits.Tests
@@ -13,12 +15,12 @@ namespace CodeBits.Tests
         [Fact]
         public void Fill_tests()
         {
-            Assert.Throws<ArgumentNullException>(() => _nullArray.Fill(0));
-            _emptyArray.Fill(0);
+            Should.Throw<ArgumentNullException>(() => _nullArray.Fill(0));
+            Should.NotThrow(() => _emptyArray.Fill(0));
 
             var bytes = new byte[4];
             bytes.Fill(5);
-            Assert.True(bytes.IsEqualTo(5, 5, 5, 5));
+            bytes.IsEqualTo(5, 5, 5, 5).ShouldBe(true);
         }
 
         [Fact]

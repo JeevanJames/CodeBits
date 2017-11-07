@@ -38,6 +38,7 @@ namespace CodeBits
         /// </summary>
         /// <param name="source"> The byte array to be populated. </param>
         /// <param name="value"> The value to populate the byte array with. </param>
+        /// <exception cref="ArgumentNullException"></exception>
         public static void Fill(this byte[] source, byte value)
         {
             if (source == null)
@@ -122,6 +123,13 @@ namespace CodeBits
             return result.ToString();
         }
 
+        /// <summary>
+        /// Retrieves the bytes from a byte array upto a specific sequence.
+        /// </summary>
+        /// <param name="source">The byte array</param>
+        /// <param name="start">The index in the array to start checking from</param>
+        /// <param name="sequence">The sequence to search for</param>
+        /// <returns>An array of bytes from the starting index to the matching sequence.</returns>
         public static byte[] GetBytesUptoSequence(this byte[] source, int start, params byte[] sequence)
         {
             int sequenceIndex = IndexOfSequence(source, start, source.Length - start + 1, sequence);

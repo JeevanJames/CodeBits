@@ -44,9 +44,10 @@
     <Compile Include="EnumIterator.cs" />
     <Compile Include="GeoDistance.cs" />
     <Compile Include="IniFile.cs" />
-    <Compile Include="ListExtensions.cs" />
+    <Compile Include="CollectionExtensions.cs" />
     <Compile Include="MruCollection.cs" />
     <Compile Include="ObservableCollection.cs" />
+    <Compile Include="OrderedCollection.cs" />
     <Compile Include="PasswordGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaltedHash.cs" />

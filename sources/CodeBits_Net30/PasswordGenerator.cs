@@ -35,10 +35,11 @@ namespace CodeBits
     public static class PasswordGenerator
     {
         /// <summary>
-        /// Generates a random password of the specified length.
+        ///     Generates a random password of the specified length.
         /// </summary>
         /// <param name="length">The length of the password to generate</param>
         /// <returns>The generated password</returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static string Generate(int length)
         {
             return Generate(length, PasswordCharacters.All, null);
@@ -49,8 +50,21 @@ namespace CodeBits
         /// </summary>
         /// <param name="length">The length of the password to generate</param>
         /// <param name="allowedCharacters">Set of allowed characters in the generated password</param>
+        /// <returns>The generated password</returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public static string Generate(int length, PasswordCharacters allowedCharacters)
+        {
+            return Generate(length, allowedCharacters, null);
+        }
+
+        /// <summary>
+        ///     Generates a random password based on the provided criteria.
+        /// </summary>
+        /// <param name="length">The length of the password to generate</param>
+        /// <param name="allowedCharacters">Set of allowed characters in the generated password</param>
         /// <param name="excludeCharacters">Set of disallowed characters in the generated password</param>
         /// <returns>The generated password</returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static string Generate(int length, PasswordCharacters allowedCharacters,
             IEnumerable<char> excludeCharacters)
         {
@@ -60,10 +74,11 @@ namespace CodeBits
         }
 
         /// <summary>
-        /// Generates a random password of the specified length and returns it as a <see cref="SecureString" />
+        ///     Generates a random password of the specified length and returns it as a <see cref="SecureString" />
         /// </summary>
         /// <param name="length">The length of the password to generate</param>
         /// <returns>The generated password as a <see cref="SecureString" /></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static SecureString GenerateSecure(int length)
         {
             return GenerateSecure(length, PasswordCharacters.All, null);
@@ -74,18 +89,41 @@ namespace CodeBits
         /// </summary>
         /// <param name="length">The length of the password to generate</param>
         /// <param name="allowedCharacters">Set of allowed characters in the generated password</param>
+        /// <returns>The generated password as a <see cref="SecureString" /></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public static SecureString GenerateSecure(int length, PasswordCharacters allowedCharacters)
+        {
+            return GenerateSecure(length, allowedCharacters, null);
+        }
+
+        /// <summary>
+        ///     Generates a random password based on the provided criteria and returns it as a <see cref="SecureString" />
+        /// </summary>
+        /// <param name="length">The length of the password to generate</param>
+        /// <param name="allowedCharacters">Set of allowed characters in the generated password</param>
         /// <param name="excludeCharacters">Set of disallowed characters in the generated password</param>
         /// <returns>The generated password as a <see cref="SecureString" /></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static SecureString GenerateSecure(int length, PasswordCharacters allowedCharacters,
             IEnumerable<char> excludeCharacters)
         {
-            SecureString password = InternalGenerate(length, allowedCharacters, excludeCharacters, () => new SecureString(),
+            SecureString password = InternalGenerate(length, allowedCharacters, excludeCharacters,
+                () => new SecureString(),
                 (pw, ch, index) => pw.AppendChar(ch));
             password.MakeReadOnly();
             return password;
         }
 
-        // Common method to generate the password for strings and SecureStrings.
+        /// <summary>
+        ///     Common method to generate the password for strings and <see cref="SecureString"/>s
+        /// </summary>
+        /// <typeparam name="T">The type of the password to return</typeparam>
+        /// <param name="length">The length of the password to generate</param>
+        /// <param name="allowedCharacters">Set of allowed characters in the generated password</param>
+        /// <param name="excludeCharacters">Set of disallowed characters in the generated password</param>
+        /// <param name="initialValue">Function to generate the initial password to return</param>
+        /// <param name="appender">Function to append a character to the password</param>
+        /// <returns>The generated password</returns>
         private static T InternalGenerate<T>(int length, PasswordCharacters allowedCharacters,
             IEnumerable<char> excludeCharacters, Func<T> initialValue, Action<T, char, int> appender)
         {
@@ -109,6 +147,12 @@ namespace CodeBits
             return password;
         }
 
+        /// <summary>
+        ///     Generates a string of allowed characters after excluding the disallowed characters.
+        /// </summary>
+        /// <param name="characters">Set of allowed characters</param>
+        /// <param name="excludeCharacters">Set of disallowed characters</param>
+        /// <returns>String of allowed characters, excluding disallowed characters</returns>
         private static string GenerateAllowedCharactersString(PasswordCharacters characters,
             IEnumerable<char> excludeCharacters)
         {
@@ -125,8 +169,11 @@ namespace CodeBits
             return allowedCharactersString.ToString();
         }
 
+        /// <summary>
+        ///     Mapping of the <see cref="PasswordCharacters" /> enum to the characters they allow.
+        /// </summary>
         private static readonly Dictionary<PasswordCharacters, string> AllowedPasswordCharacters =
-            new Dictionary<PasswordCharacters, string>(4) {
+            new Dictionary<PasswordCharacters, string>(5) {
                 { PasswordCharacters.LowercaseLetters, "abcdefghijklmnopqrstuvwxyz" },
                 { PasswordCharacters.UppercaseLetters, "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
                 { PasswordCharacters.Numbers, "0123456789" },
@@ -135,6 +182,9 @@ namespace CodeBits
             };
     }
 
+    /// <summary>
+    ///     Enum representing the various sets of allowed characters for password generation.
+    /// </summary>
     [Flags]
     public enum PasswordCharacters
     {

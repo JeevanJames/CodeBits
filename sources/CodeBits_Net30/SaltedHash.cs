@@ -36,7 +36,7 @@ namespace CodeBits
         ///     Computes a salted hash from the given password.
         /// </summary>
         /// <param name="password">The password from which to compute the salted hash</param>
-        /// <returns>A SaltedHash instance containing the hash and salt values</returns>
+        /// <returns>A <see cref="SaltedHash"/> instance containing the hash and salt values</returns>
         public static SaltedHash Compute(string password)
         {
             var saltBytes = new byte[32];
@@ -51,15 +51,15 @@ namespace CodeBits
         ///     Verifies that the a password matches the specified hash and salt values
         /// </summary>
         /// <param name="password">The password to check</param>
-        /// <param name="hash">The hash value to check against</param>
+        /// <param name="passwordHash">The hash value to check against</param>
         /// <param name="salt">The salt value to check against</param>
         /// <returns>True if the specified password matches the salted hash</returns>
-        public static bool Verify(string password, string hash, string salt)
+        public static bool Verify(string password, string passwordHash, string salt)
         {
             byte[] saltBytes = Convert.FromBase64String(salt);
             byte[] passwordAndSaltBytes = Concat(password, saltBytes);
             string hashAttempt = ComputeHash(passwordAndSaltBytes);
-            return hash == hashAttempt;
+            return passwordHash == hashAttempt;
         }
 
         private static string ComputeHash(byte[] bytes)
@@ -76,21 +76,21 @@ namespace CodeBits
 
     public sealed partial class SaltedHash
     {
-        private readonly string _hash;
+        private readonly string _passwordHash;
         private readonly string _salt;
 
-        private SaltedHash(string hash, string salt)
+        private SaltedHash(string passwordHash, string salt)
         {
-            _hash = hash;
+            _passwordHash = passwordHash;
             _salt = salt;
         }
 
         /// <summary>
-        ///     The computed hash value as a base-64 encoded string
+        ///     The computed password hash value as a base-64 encoded string
         /// </summary>
-        public string Hash
+        public string PasswordHash
         {
-            get { return _hash; }
+            get { return _passwordHash; }
         }
 
         /// <summary>

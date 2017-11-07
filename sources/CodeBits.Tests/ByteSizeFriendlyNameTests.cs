@@ -2,6 +2,8 @@
 using System.Globalization;
 using System.Threading;
 
+using Shouldly;
+
 using Xunit;
 
 namespace CodeBits.Tests
@@ -10,6 +12,7 @@ namespace CodeBits.Tests
     {
         public ByteSizeFriendlyNameTests()
         {
+            // Set current thread culture for predictable digit grouping
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
         }
 
@@ -61,6 +64,21 @@ namespace CodeBits.Tests
         }
 
         [Fact]
+        public void Megabyte_values()
+        {
+            const long size = 1024L * 1024 * 10;
+            
+            string friendlyName = ByteSizeFriendlyName.Build(size, new FriendlyNameOptions { DecimalPlaces = 10 });
+            friendlyName.ShouldBe("10 MB");
+
+            friendlyName = ByteSizeFriendlyName.Build(size, new FriendlyNameOptions { UnitDisplayMode = UnitDisplayMode.AlwaysHide });
+            friendlyName.ShouldBe("10");
+
+            friendlyName = ByteSizeFriendlyName.Build(size, new FriendlyNameOptions { UnitDisplayMode = UnitDisplayMode.HideOnlyForBytes });
+            friendlyName.ShouldBe("10 MB");
+        }
+
+        [Fact]
         public void Gigabyte_values()
         {
             const long size = 1024L * 1024 * 1024 * 10;
@@ -70,6 +88,9 @@ namespace CodeBits.Tests
 
             friendlyName = ByteSizeFriendlyName.Build(size, new FriendlyNameOptions { UnitDisplayMode = UnitDisplayMode.AlwaysHide });
             Assert.Equal("10", friendlyName);
+
+            friendlyName = ByteSizeFriendlyName.Build(size, new FriendlyNameOptions { UnitDisplayMode = UnitDisplayMode.HideOnlyForBytes });
+            Assert.Equal("10 GB", friendlyName);
         }
     }
 }

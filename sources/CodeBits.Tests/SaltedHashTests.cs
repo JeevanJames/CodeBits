@@ -11,7 +11,7 @@ namespace CodeBits.Tests
             {
                 string password = PasswordGenerator.Generate(32);
                 SaltedHash saltedHash = SaltedHash.Compute(password);
-                Assert.True(SaltedHash.Verify(password, saltedHash.Hash, saltedHash.Salt));
+                Assert.True(SaltedHash.Verify(password, saltedHash.PasswordHash, saltedHash.Salt));
             }
         }
     }

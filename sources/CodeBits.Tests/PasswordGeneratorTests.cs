@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
+
+using Shouldly;
 
 using Xunit;
 
@@ -15,9 +16,9 @@ namespace CodeBits.Tests
         [InlineData(-100)]
         public void Zero_or_negative_password_length_throws_exception(int length)
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => PasswordGenerator.Generate(length));
+            Should.Throw<ArgumentOutOfRangeException>(() => PasswordGenerator.Generate(length));
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => PasswordGenerator.GenerateSecure(length));
+            Should.Throw<ArgumentOutOfRangeException>(() => PasswordGenerator.GenerateSecure(length));
         }
 
         [Fact]
@@ -26,37 +27,32 @@ namespace CodeBits.Tests
             for (int i = 1; i <= 50; i++)
             {
                 string password = PasswordGenerator.Generate(i);
-                Assert.Equal(i, password.Length);
-            }
-            for (int i = 1; i <= 50; i++)
-            {
-                SecureString password = PasswordGenerator.GenerateSecure(i);
-                Assert.Equal(i, password.Length);
+                password.Length.ShouldBe(i);
+
+                SecureString securePassword = PasswordGenerator.GenerateSecure(i);
+                securePassword.Length.ShouldBe(i);
             }
         }
 
         [Theory]
         [InlineData(PasswordCharacters.Numbers, "13579")]
         [InlineData(PasswordCharacters.AllLetters, "JjMmRrEe")]
+        [InlineData(PasswordCharacters.AlphaNumeric, "OlIS015")]
         public void Excluded_characters_are_excluded(PasswordCharacters allowedCharacters, string excludeCharacters)
         {
-            char[] excludeChars = excludeCharacters.ToArray();
-
             for (int i = 0; i < 50; i++)
             {
-                string password = PasswordGenerator.Generate(40, allowedCharacters, excludeChars);
-                foreach (char excludeChar in excludeChars)
-                    Assert.DoesNotContain(excludeChar, password);
-            }
+                string password = PasswordGenerator.Generate(40, allowedCharacters, excludeCharacters);
+                foreach (char excludeChar in excludeCharacters)
+                    password.ShouldNotContain(excludeChar);
 
-            for (int i = 0; i < 50; i++)
-            {
-                SecureString password = PasswordGenerator.GenerateSecure(40, allowedCharacters, excludeChars);
-                foreach (char excludeChar in excludeChars)
-                    Assert.DoesNotContain(excludeChar, SecureStringToString(password));
+                SecureString securePassword = PasswordGenerator.GenerateSecure(40, allowedCharacters, excludeCharacters);
+                foreach (char excludeChar in excludeCharacters)
+                    SecureStringToString(securePassword).ShouldNotContain(excludeChar);
             }
         }
 
+        // Converts a SecureString to a string
         private static string SecureStringToString(SecureString secureString)
         {
             IntPtr valuePtr = IntPtr.Zero;

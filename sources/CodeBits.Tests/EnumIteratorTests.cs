@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using Shouldly;
+
 using Xunit;
 
 namespace CodeBits.Tests
@@ -12,72 +14,71 @@ namespace CodeBits.Tests
         [Fact]
         public void Ctor_should_throw_if_null_is_specified()
         {
-            Assert.Throws<ArgumentNullException>(() => EnumIterator.For(null));
+            Should.Throw<ArgumentNullException>(() => EnumIterator.For(null));
         }
 
         [Fact]
         public void Ctor_should_throw_if_non_enum_type_is_specified()
         {
-            Assert.Throws<ArgumentException>(() => EnumIterator.For<int>());
-            Assert.Throws<ArgumentException>(() => EnumIterator.For<long>());
-            Assert.Throws<ArgumentException>(() => EnumIterator.For<double>());
-            Assert.Throws<ArgumentException>(() => EnumIterator.For<float>());
-            Assert.Throws<ArgumentException>(() => EnumIterator.For<DateTime>());
+            Should.Throw<ArgumentException>(() => EnumIterator.For<int>());
+            Should.Throw<ArgumentException>(() => EnumIterator.For<long>());
+            Should.Throw<ArgumentException>(() => EnumIterator.For<double>());
+            Should.Throw<ArgumentException>(() => EnumIterator.For<float>());
+            Should.Throw<ArgumentException>(() => EnumIterator.For<DateTime>());
 
-            Assert.Throws<ArgumentException>(() => EnumIterator.For(typeof(int)));
-            Assert.Throws<ArgumentException>(() => EnumIterator.For(typeof(long)));
-            Assert.Throws<ArgumentException>(() => EnumIterator.For(typeof(double)));
-            Assert.Throws<ArgumentException>(() => EnumIterator.For(typeof(float)));
-            Assert.Throws<ArgumentException>(() => EnumIterator.For(typeof(DateTime)));
+            Should.Throw<ArgumentException>(() => EnumIterator.For(typeof(int)));
+            Should.Throw<ArgumentException>(() => EnumIterator.For(typeof(long)));
+            Should.Throw<ArgumentException>(() => EnumIterator.For(typeof(double)));
+            Should.Throw<ArgumentException>(() => EnumIterator.For(typeof(float)));
+            Should.Throw<ArgumentException>(() => EnumIterator.For(typeof(DateTime)));
         }
 
         [Fact]
         public void Ctor_should_succeed_if_enum_type_is_specified()
         {
-            Assert.NotNull(EnumIterator.For<DayOfWeek>());
-            Assert.NotNull(EnumIterator.For<BindingFlags>());
+            EnumIterator.For<DayOfWeek>().ShouldNotBeNull();
+            EnumIterator.For<BindingFlags>().ShouldNotBeNull();
 
-            Assert.NotNull(EnumIterator.For(typeof(DayOfWeek)));
-            Assert.NotNull(EnumIterator.For(typeof(BindingFlags)));
+            EnumIterator.For(typeof(DayOfWeek)).ShouldNotBeNull();
+            EnumIterator.For(typeof(BindingFlags)).ShouldNotBeNull();
         }
 
         [Fact]
         public void Enumerator_should_return_all_enum_values_in_correct_order()
         {
             List<DayOfWeek> daysOfWeek = EnumIterator.For<DayOfWeek>().ToList();
-            Assert.Equal(7, daysOfWeek.Count);
-            Assert.Equal(DayOfWeek.Sunday, daysOfWeek[0]);
-            Assert.Equal(DayOfWeek.Monday, daysOfWeek[1]);
-            Assert.Equal(DayOfWeek.Tuesday, daysOfWeek[2]);
-            Assert.Equal(DayOfWeek.Wednesday, daysOfWeek[3]);
-            Assert.Equal(DayOfWeek.Thursday, daysOfWeek[4]);
-            Assert.Equal(DayOfWeek.Friday, daysOfWeek[5]);
-            Assert.Equal(DayOfWeek.Saturday, daysOfWeek[6]);
+            daysOfWeek.Count.ShouldBe(7);
+            daysOfWeek[0].ShouldBe(DayOfWeek.Sunday);
+            daysOfWeek[1].ShouldBe(DayOfWeek.Monday);
+            daysOfWeek[2].ShouldBe(DayOfWeek.Tuesday);
+            daysOfWeek[3].ShouldBe(DayOfWeek.Wednesday);
+            daysOfWeek[4].ShouldBe(DayOfWeek.Thursday);
+            daysOfWeek[5].ShouldBe(DayOfWeek.Friday);
+            daysOfWeek[6].ShouldBe(DayOfWeek.Saturday);
         }
 
         [Fact]
         public void Non_generic_enumerator_should_return_all_enum_values_in_correct_order()
         {
             List<DayOfWeek> daysOfWeek = EnumIterator.For(typeof(DayOfWeek)).OfType<DayOfWeek>().ToList();
-            Assert.Equal(7, daysOfWeek.Count);
-            Assert.Equal(DayOfWeek.Sunday, daysOfWeek[0]);
-            Assert.Equal(DayOfWeek.Monday, daysOfWeek[1]);
-            Assert.Equal(DayOfWeek.Tuesday, daysOfWeek[2]);
-            Assert.Equal(DayOfWeek.Wednesday, daysOfWeek[3]);
-            Assert.Equal(DayOfWeek.Thursday, daysOfWeek[4]);
-            Assert.Equal(DayOfWeek.Friday, daysOfWeek[5]);
-            Assert.Equal(DayOfWeek.Saturday, daysOfWeek[6]);
+            daysOfWeek.Count.ShouldBe(7);
+            daysOfWeek[0].ShouldBe(DayOfWeek.Sunday);
+            daysOfWeek[1].ShouldBe(DayOfWeek.Monday);
+            daysOfWeek[2].ShouldBe(DayOfWeek.Tuesday);
+            daysOfWeek[3].ShouldBe(DayOfWeek.Wednesday);
+            daysOfWeek[4].ShouldBe(DayOfWeek.Thursday);
+            daysOfWeek[5].ShouldBe(DayOfWeek.Friday);
+            daysOfWeek[6].ShouldBe(DayOfWeek.Saturday);
         }
 
         [Fact]
         public void Basic_linq_functions_work_on_the_iterator()
         {
-            List<DayOfWeek> enumerable = EnumIterator.For<DayOfWeek>().ToList();
-            Assert.Equal(DayOfWeek.Sunday, enumerable.First());
-            Assert.Equal(DayOfWeek.Saturday, enumerable.Last());
-            Assert.Equal(DayOfWeek.Wednesday, enumerable.Skip(3).Take(1).Single());
-            Assert.True(enumerable.Any());
-            Assert.Equal(7, enumerable.Count);
+            EnumIterator.For<DayOfWeek>().First().ShouldBe(DayOfWeek.Sunday);
+            EnumIterator.For<DayOfWeek>().Last().ShouldBe(DayOfWeek.Saturday);
+            EnumIterator.For<DayOfWeek>().Skip(3).Take(1).Single().ShouldBe(DayOfWeek.Wednesday);
+            EnumIterator.For<DayOfWeek>().Any().ShouldBeTrue();
+            EnumIterator.For<DayOfWeek>().Count().ShouldBe(7);
         }
     }
 }

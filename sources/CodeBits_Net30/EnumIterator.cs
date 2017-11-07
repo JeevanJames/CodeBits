@@ -28,15 +28,16 @@ using System.Linq;
 namespace CodeBits
 {
     /// <summary>
-    /// Provides iterators for enum types. Can be used in a LINQ expression.
+    ///     Provides iterators for enum types. Can be used in a LINQ expression.
     /// </summary>
-    public static partial class EnumIterator
+    public static class EnumIterator
     {
         /// <summary>
-        /// Generates an iterator for the enum type specified by the TEnum generic parameter.
+        ///     Generates an iterator for the enum type specified by the TEnum generic parameter.
         /// </summary>
         /// <typeparam name="TEnum">The enum type to generate the iterator for</typeparam>
         /// <returns>An generic iterator that can iterate over the values of TEnum</returns>
+        /// <exception cref="ArgumentException">Thrown when the generic parameter is not an enum</exception>
         public static IEnumerable<TEnum> For<TEnum>()
         {
             if (!typeof(TEnum).IsEnum)
@@ -45,10 +46,12 @@ namespace CodeBits
         }
 
         /// <summary>
-        /// Generates an iterator for the enum type specified by the TEnum generic parameter.
+        ///     Generates an iterator for the enum type specified by the TEnum generic parameter.
         /// </summary>
         /// <param name="enumType">The enum type to generate the iterator for</param>
         /// <returns>A non-generic iterator that can iterate over the values of the enum</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the specified type is null</exception>
+        /// <exception cref="ArgumentException">Thrown when the specified type is not an enum</exception>
         public static IEnumerable For(Type enumType)
         {
             if (enumType == null)
