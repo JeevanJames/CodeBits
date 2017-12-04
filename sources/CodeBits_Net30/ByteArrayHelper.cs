@@ -147,7 +147,7 @@ namespace CodeBits
 
         public static int IndexOfSequence(this byte[] source, int start, int count, byte[] sequence)
         {
-            int sequenceIndex = 0;
+            var sequenceIndex = 0;
             int endIndex = Math.Min(source.Length, start + count);
             for (int byteIdx = start; byteIdx < endIndex; byteIdx++)
             {

@@ -28,6 +28,17 @@ namespace CodeBits
 {
     public static class CollectionExtensions
     {
+        /// <summary>
+        ///     Adds the elements of the specified <see cref="IEnumerable{T}" /> to the collection
+        /// </summary>
+        /// <typeparam name="T">The type of the elements of the collection</typeparam>
+        /// <param name="collection">The collection to add the items to.</param>
+        /// <param name="items">
+        ///     The <see cref="IEnumerable{T}" /> whose elements should be added to the end of the collection. The
+        ///     <see cref="IEnumerable{T}" /> itself cannot be null, but it can contain elements that are null, if type T is a
+        ///     reference type.
+        /// </param>
+        /// <exception cref="ArgumentNullException">collection is null</exception>
         public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> items)
         {
             if (collection == null)
@@ -65,8 +76,7 @@ namespace CodeBits
         }
 
         public static void AddRange<TDest, TSource>(this ICollection<TDest> collection, IEnumerable<TSource> items,
-            Func<TSource, bool> predicate,
-            Converter<TSource, TDest> converter)
+            Func<TSource, bool> predicate, Converter<TSource, TDest> converter)
         {
             if (collection == null)
                 throw new ArgumentNullException("collection");
@@ -132,6 +142,20 @@ namespace CodeBits
             }
         }
 
+        public static bool IsEmpty<T>(this IEnumerable<T> source)
+        {
+            var collection = source as ICollection<T>;
+            return collection != null ? collection.Count == 0 : !source.Any();
+        }
+
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T> source)
+        {
+            if (source == null)
+                return true;
+            var collection = source as ICollection<T>;
+            return collection != null ? collection.Count == 0 : !source.Any();
+        }
+
         public static int LastIndexOf<T>(this IList<T> list, Func<T, bool> predicate)
         {
             if (list == null)
@@ -145,6 +169,23 @@ namespace CodeBits
                     return i;
             }
             return -1;
+        }
+
+        /// <summary>
+        ///     Determines whether none of the elements of a sequence satisfies the specified condition
+        /// </summary>
+        /// <typeparam name="T">The type of the elements of source.</typeparam>
+        /// <param name="source">An <see cref="IEnumerable{T}" /> whose elements to apply the predicate to.</param>
+        /// <param name="predicate">A function to test each element for a condition.</param>
+        /// <returns>true if any elements in the source sequence pass the test in the specified predicate; otherwise, false.</returns>
+        /// <exception cref="ArgumentNullException">source or predicate is null</exception>
+        public static bool None<T>(this IEnumerable<T> source, Func<T, bool> predicate)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            if (predicate == null)
+                throw new ArgumentNullException("predicate");
+            return !source.Any(predicate);
         }
 
         public static bool Remove<T>(this IList<T> list, Func<T, bool> predicate)
@@ -200,6 +241,19 @@ namespace CodeBits
                 }
             }
             return false;
+        }
+
+        public static IEnumerable<T> Repeat<T>(this IEnumerable<T> source, int count)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            if (count < 0)
+                throw new ArgumentOutOfRangeException("count");
+            for (var i = 0; i < count; i++)
+            {
+                foreach (T item in source)
+                    yield return item;
+            }
         }
 
         public static TOutput[] ToArray<TInput, TOutput>(this IEnumerable<TInput> source,

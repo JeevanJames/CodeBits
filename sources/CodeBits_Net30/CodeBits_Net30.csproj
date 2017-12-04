@@ -41,6 +41,7 @@
     <Compile Include="ASCIIEncoding.cs" />
     <Compile Include="ByteArrayHelper.cs" />
     <Compile Include="ByteSizeFriendlyName.cs" />
+    <Compile Include="Checksum.cs" />
     <Compile Include="EnumIterator.cs" />
     <Compile Include="GeoDistance.cs" />
     <Compile Include="IniFile.cs" />

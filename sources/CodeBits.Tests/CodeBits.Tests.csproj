@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="ByteArrayHelperTests.cs" />
     <Compile Include="ByteSizeFriendlyNameTests.cs" />
+    <Compile Include="ChecksumTests.cs" />
     <Compile Include="EnumIteratorTests.cs" />
     <Compile Include="IniFileTests.cs" />
     <Compile Include="MruCollectionTests.cs" />
