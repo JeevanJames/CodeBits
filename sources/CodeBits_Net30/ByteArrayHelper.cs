@@ -156,8 +156,13 @@ namespace CodeBits
                     sequenceIndex++;
                     if (sequenceIndex >= sequence.Length)
                         return byteIdx - sequence.Length + 1;
-                } else
+                }
+                else
+                {
+                    if (sequenceIndex > 0)
+                        byteIdx = byteIdx - sequenceIndex;
                     sequenceIndex = 0;
+                }
             }
             return -1;
         }
