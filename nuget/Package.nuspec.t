@@ -7,6 +7,7 @@
         <license type="expression">Apache-2.0</license>
         <projectUrl>https://github.com/JeevanJames/CodeBits</projectUrl>
         <icon>images\logo.png</icon>
+        <readme>docs\README.md</readme>
         <id>CodeBits.{{ (datasource "data").id }}</id>
         <title>CodeBits {{ (datasource "data").title }}</title>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -20,6 +21,7 @@ See the project site for documentation.</description>
 
     <files>
         <file src="..\logo.png" target="images\" />
+        <file src="..\README.md" target="docs\ />
 
         <!-- For newer NuGet versions -->
         <file src="..\sources\{{ (datasource "data").project }}\{{ (datasource "data").id }}.cs" target="contentFiles\cs\any\CodeBits\" />
