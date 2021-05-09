@@ -1,0 +1,7 @@
+{
+    "id": "OrderedObservableCollection",
+    "title": "Ordered Observable Collection",
+    "description": "An always sorted observable collection. Has options to allow/disallow duplicate items as well as to sort in reverse order.",
+    "tags": "ordered observable collection sorted",
+    "project": "CodeBits"
+}

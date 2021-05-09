@@ -12,7 +12,6 @@ nuget pack OrderedObservableCollection.nuspec
 nuget pack PasswordGenerator.nuspec
 nuget pack SaltedHash.nuspec
 nuget pack WindowsServiceRunner.nuspec
-nuget pack WP.AppBarHelper.nuspec
 
 rem Insert package versions for each file
 nuget push ByteArrayHelper.nupkg -Source https://api.nuget.org/v3/index.json
@@ -25,4 +24,3 @@ nuget push OrderedObservableCollection.nupkg -Source https://api.nuget.org/v3/in
 nuget push PasswordGenerator.nupkg -Source https://api.nuget.org/v3/index.json
 nuget push SaltedHash.nupkg -Source https://api.nuget.org/v3/index.json
 nuget push WindowsServiceRunner.nupkg -Source https://api.nuget.org/v3/index.json
-nuget push WP.AppBarHelper.nupkg -Source https://api.nuget.org/v3/index.json

@@ -1,0 +1,7 @@
+{
+    "id": "WindowsServiceRunner",
+    "title": "Windows Service Runner",
+    "description": "Executes Windows service code as either a Console application or an actual Windows service, depending on the project output type of the project.",
+    "tags": "windows service runner",
+    "project": "CodeBits"
+}
