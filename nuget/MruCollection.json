@@ -1,0 +1,7 @@
+{
+    "id": "MruCollection",
+    "title": "Most Recently Used (MRU) collection",
+    "description": "Custom collection that moves the most recently-used items to the top.",
+    "tags": "mru collection most-recently-used",
+    "project": "CodeBits_Net30"
+}

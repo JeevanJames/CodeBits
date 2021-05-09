@@ -1,0 +1,7 @@
+{
+    "id": "OrderedCollection",
+    "title": "Ordered Collection",
+    "description": "An always sorted collection. Has options to allow/disallow duplicate items as well as to sort in reverse order.",
+    "tags": "ordered collection sorted",
+    "project": "CodeBits_Net30"
+}
