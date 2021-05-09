@@ -18,7 +18,7 @@ limitations under the License.
 */
 #endregion
 
-/* Documentation: http://codebits.codeplex.com/wikipage?title=SaltedHash */
+/* Documentation: https://github.com/JeevanJames/CodeBits/wiki/SaltedHash */
 
 using System;
 using System.Linq;

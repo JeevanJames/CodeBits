@@ -18,7 +18,7 @@ limitations under the License.
 */
 #endregion
 
-/* Documentation: http://codebits.codeplex.com/wikipage?title=OrderedCollection */
+/* Documentation: https://github.com/JeevanJames/CodeBits/wiki/OrderedCollection */
 
 using System;
 using System.Collections.Generic;

@@ -85,7 +85,8 @@ namespace CodeBits
         }
 
         /// <summary>
-        ///     Generates a random password based on the provided criteria and returns it as a <see cref="SecureString" />
+        ///     Generates a random password based on the provided criteria and returns it as a
+        ///     <see cref="SecureString" />.
         /// </summary>
         /// <param name="length">The length of the password to generate</param>
         /// <param name="allowedCharacters">Set of allowed characters in the generated password</param>
@@ -97,7 +98,8 @@ namespace CodeBits
         }
 
         /// <summary>
-        ///     Generates a random password based on the provided criteria and returns it as a <see cref="SecureString" />
+        ///     Generates a random password based on the provided criteria and returns it as a
+        ///     <see cref="SecureString" />.
         /// </summary>
         /// <param name="length">The length of the password to generate</param>
         /// <param name="allowedCharacters">Set of allowed characters in the generated password</param>

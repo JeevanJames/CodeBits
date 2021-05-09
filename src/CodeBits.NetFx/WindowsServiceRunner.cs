@@ -21,7 +21,7 @@ limitations under the License.
 /*
 Required References:
  * System.ServiceProcess
-Documentation: http://codebits.codeplex.com/wikipage?title=WindowsServiceRunner
+Documentation: https://github.com/JeevanJames/CodeBits/wiki/WindowsServiceRunner
 */
 
 using System;
@@ -35,10 +35,12 @@ using System.Threading.Tasks;
 namespace CodeBits
 {
     /// <summary>
-    ///     Provides functionality to execute a Windows service class as either a console application or
-    ///     a Windows service, depending on how the project properties are set.
-    ///     To run as a console application, set the project output type to "Console Application"
-    ///     To run as a Windows service, set the project output type to "Windows Application"
+    ///     Provides functionality to execute a Windows service class as either a console application
+    ///     or a Windows service, depending on how the project properties are set.
+    ///     <para/>
+    ///     To run as a console application, set the project output type to <c>Console Application</c>.
+    ///     <para/>
+    ///     To run as a Windows service, set the project output type to <c>Windows Application</c>.
     /// </summary>
     public sealed class WindowsServiceRunner
     {
@@ -69,7 +71,10 @@ namespace CodeBits
         /// <summary>
         ///     Registers the specified service type to be run.
         /// </summary>
-        /// <typeparam name="TService"> The type of service to run. This type must be a subclass of ServiceBase and should have a default constructor </typeparam>
+        /// <typeparam name="TService">
+        ///     The type of service to run. This type must be a subclass of ServiceBase and should
+        ///     have a default constructor.
+        /// </typeparam>
         public void Register<TService>() where TService : ServiceBase, new()
         {
             _serviceFactories.Add(() => new TService());
@@ -78,7 +83,10 @@ namespace CodeBits
         /// <summary>
         /// Registers the specified service type to run
         /// </summary>
-        /// <typeparam name="TService"></typeparam>
+        /// <typeparam name="TService">
+        ///     The type of service to run. This type must be a subclass of ServiceBase and should
+        ///     have a default constructor.
+        /// </typeparam>
         /// <param name="args"></param>
         public void Register<TService>(params object[] args) where TService : ServiceBase
         {
