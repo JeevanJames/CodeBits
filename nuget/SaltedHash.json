@@ -3,5 +3,5 @@
     "title": "Salted Hash",
     "description": "Class that can compute and verify salted hashes.",
     "tags": "salted hash password",
-    "project": "CodeBits_Net30"
+    "project": "CodeBits"
 }

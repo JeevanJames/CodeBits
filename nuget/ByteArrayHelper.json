@@ -3,5 +3,5 @@
     "title": "Byte Array Helper",
     "description": "Set of utility extension methods for byte arrays. Includes general methods for equality checks, null/empty checks, etc. as well as methods to find and manipulate byte sequences.",
     "tags": "byte array extension-methods extensions helper utility",
-    "project": "CodeBits_Net30"
+    "project": "CodeBits"
 }

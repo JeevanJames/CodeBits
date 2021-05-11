@@ -3,5 +3,5 @@
     "title": "Enum Iterator",
     "description": "Provides iterators that can traverse through the items in an enum type. Can be used in LINQ expressions.",
     "tags": "enum iterator enumerator enumeration",
-    "project": "CodeBits_Net30"
+    "project": "CodeBits"
 }

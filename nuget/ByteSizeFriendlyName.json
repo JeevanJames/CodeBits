@@ -3,5 +3,5 @@
     "title": "Byte Size Friendly Name Generator",
     "description": "Builds a friendly representation of a specified byte size value, after converting it to the best matching unit (bytes, KB, MB, GB, etc.). Has various options to control the format of the outputted string.",
     "tags": "byte size friendly name generator",
-    "project": "CodeBits_Net30"
+    "project": "CodeBits"
 }

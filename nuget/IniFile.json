@@ -3,5 +3,5 @@
     "title": "INI File",
     "description": "Class to read and write INI files.",
     "tags": "inifile ini file handler",
-    "project": "CodeBits_Net30"
+    "project": "CodeBits"
 }
