@@ -12,11 +12,15 @@ If (-Not $Package -Or -Not $Version) {
     Write-Host "  To get latest published version of the package"
     Write-Host -ForegroundColor Yellow "      ${ScriptName} -package <package name>"
 
+    Write-Host
+
     # If just package name is specified, be helpful and list the latest stable version of the CodeBits package
     If (-Not ([string]::IsNullOrEmpty($Package))) {
-        Write-Host
         Write-Host -ForegroundColor Cyan "Latest version of package:"
         nuget list CodeBits.${Package}
+    } Else {
+        Write-Host -ForegroundColor Cyan "Available packages for publishing"
+        Get-ChildItem -Path ./nuget -File -Filter *.json | select -exp Name
     }
 
     exit 1
