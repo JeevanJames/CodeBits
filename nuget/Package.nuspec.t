@@ -7,15 +7,18 @@
         <license type="expression">Apache-2.0</license>
         <projectUrl>https://github.com/JeevanJames/CodeBits</projectUrl>
         <icon>images\logo.png</icon>
-        <!-- <readme>docs\README.md</readme> -->
+        <readme>docs\README.md</readme>
         <id>CodeBits.{{ (datasource "data").id }}</id>
         <title>CodeBits {{ (datasource "data").title }}</title>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>{{ (datasource "data").description }}
 
-CodeBits are useful code blocks that can included in your C# projects through NuGet.
+CodeBits are useful code blocks that can included in your C# projects through NuGet. Each code bit is a single source file that gets added to a CodeBits folder in your project when you import it.
 
-See the project site for documentation.</description>
+Project repository: https://github.com/JeevanJames/CodeBits
+Documentation: https://github.com/JeevanJames/CodeBits/wiki/{{ (datasource "data").id }}
+Source code: https://github.com/JeevanJames/CodeBits/blob/master/src/{{ (datasource "data").project }}/{{ (datasource "data").id }}.cs
+</description>
         <summary />
         <copyright>Copyright (c) Jeevan James 2012-2021</copyright>
         <tags>CodeBits code bits blocks {{ (datasource "data").tags }}</tags>

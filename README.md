@@ -1,5 +1,5 @@
 # Code Bits
-Code Bits is a set of useful code blocks that can included in your .NET projects through [NuGet](http://nuget.org/). Each code bit is a single source file that gets added to a _CodeBits_ folder in your project when you import it.
+Code Bits are a set of useful code blocks that can be included in your C# projects through [NuGet](http://nuget.org/). Each code bit is a single source file that gets added to a _CodeBits_ folder in your project when you import it.
 
 Code Bits does not add assemblies to your project.
 

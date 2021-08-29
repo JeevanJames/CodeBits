@@ -5,8 +5,20 @@ Param(
 )
 
 If (-Not $Package -Or -Not $Version) {
-    Write-Host "USAGE:"
-    Write-Host "  ./deploy.ps1 -package <package name> -version <version>"
+    Write-Host -ForegroundColor Cyan "USAGE:"
+    $ScriptName = $MyInvocation.MyCommand.Name
+    Write-Host "  To publish the package"
+    Write-Host -ForegroundColor Yellow "      ${ScriptName} -package <package name> -version <version>"
+    Write-Host "  To get latest published version of the package"
+    Write-Host -ForegroundColor Yellow "      ${ScriptName} -package <package name>"
+
+    # If just package name is specified, be helpful and list the latest stable version of the CodeBits package
+    If (-Not ([string]::IsNullOrEmpty($Package))) {
+        Write-Host
+        Write-Host -ForegroundColor Cyan "Latest version of package:"
+        nuget list CodeBits.${Package}
+    }
+
     exit 1
 }
 
