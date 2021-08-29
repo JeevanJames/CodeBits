@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-        <RootNamespace>CodeBits.Tests</RootNamespace>
+        <RootNamespace>CodeBits.NetStandard21.Tests</RootNamespace>
 
         <IsPackable>false</IsPackable>
     </PropertyGroup>
@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\CodeBits\CodeBits.csproj" />
+      <ProjectReference Include="..\..\src\CodeBits.NetStandard21\CodeBits.NetStandard21.csproj" />
     </ItemGroup>
 
 </Project>

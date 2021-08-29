@@ -1,0 +1,7 @@
+{
+    "id": "ShortGuid.JsonConverter",
+    "title": "Short GUID JSON converter",
+    "description": "JSON converter (System.Text.Json) converter for CodeBits.ShortGuid.",
+    "tags": "short-guid guid json converter",
+    "project": "CodeBits.NetStandard21"
+}

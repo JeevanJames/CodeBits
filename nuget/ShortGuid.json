@@ -1,0 +1,7 @@
+{
+    "id": "ShortGuid",
+    "title": "Short GUID",
+    "description": "Short, more readable globally unique identifier (GUID)",
+    "tags": "short-guid guid",
+    "project": "CodeBits.NetStandard21"
+}
