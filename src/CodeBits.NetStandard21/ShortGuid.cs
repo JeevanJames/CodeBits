@@ -40,34 +40,96 @@ namespace CodeBits
             _guid = guid;
         }
 
+        public static ShortGuid NewValue()
+        {
+            return new ShortGuid(Guid.NewGuid());
+        }
+
+        public static ShortGuid Parse(ReadOnlySpan<char> input)
+        {
+            (bool success, byte[]? decoded, Exception? exception) = TryBase64UrlDecode(input);
+            if (!success)
+            {
+                if (exception is not null)
+                    throw exception;
+                return new Guid(decoded ?? Array.Empty<byte>());
+            }
+
+            return new Guid(decoded ?? Array.Empty<byte>());
+        }
+
+        /// <summary>
+        ///     Parses the given <paramref name="input"/> string into a <see cref="ShortGuid"/>.
+        /// </summary>
+        /// <param name="input">
+        ///     The string to parse. This should be a valid string representation of a short GUID.
+        /// </param>
+        /// <returns>A <see cref="ShortGuid"/> instance parsed from the input string.</returns>
+        /// <exception cref="ArgumentNullException">
+        ///     Thrown if <paramref name="input"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if <paramref name="input"/> is invalid and cannot be parsed into a <see cref="ShortGuid"/>
+        ///     instance.
+        /// </exception>
         public static ShortGuid Parse(string input)
-        {
-            return new Guid(Base64UrlDecode(input));
-        }
-
-        public override string ToString()
-        {
-            Span<byte> bytes = stackalloc byte[16];
-            return _guid.TryWriteBytes(bytes)
-                ? Base64UrlEncode(bytes.ToArray())
-                : throw new InvalidOperationException("Cannot allocate SGuid string.");
-        }
-
-        private static string Base64UrlEncode(byte[] input)
         {
             if (input is null)
                 throw new ArgumentNullException(nameof(input));
+            return Parse(input.AsSpan());
+        }
 
+        public static bool TryParse(ReadOnlySpan<char> input, out ShortGuid shortGuid)
+        {
+            (bool success, byte[]? decoded, _) = TryBase64UrlDecode(input);
+            if (success)
+            {
+                shortGuid = new Guid(decoded ?? Array.Empty<byte>());
+                return true;
+            }
+
+            shortGuid = default;
+            return false;
+        }
+
+        /// <summary>
+        ///     Attempts to parse the given <paramref name="input"/> string into a <see cref="ShortGuid"/>.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="shortGuid"></param>
+        /// <returns></returns>
+        public static bool TryParse(string input, out ShortGuid shortGuid)
+        {
+            if (input is null)
+                throw new ArgumentNullException(nameof(input));
+            return TryParse(input.AsSpan(), out shortGuid);
+        }
+
+        /// <summary>
+        ///     Converts this <see cref="ShortGuid"/> instance to a string.
+        /// </summary>
+        /// <returns>The string representation of this <see cref="ShortGuid"/> instance.</returns>
+        /// <exception cref="InvalidOperationException">
+        ///     Thrown if the operation fails for some reason.
+        /// </exception>
+        public override string ToString()
+        {
+            Span<byte> input = stackalloc byte[16];
+            if (!_guid.TryWriteBytes(input))
+                throw new InvalidOperationException("Cannot allocate SGuid string.");
+
+            // Base64 URL encode the input
             int outputSize = checked((checked(input.Length + 2) / 3) * 4);
-            char[] output = new char[outputSize];
-            int outputBytes = Convert.ToBase64CharArray(input, 0, input.Length, output, 0);
+            Span<char> output = stackalloc char[outputSize];
+            if (!Convert.TryToBase64Chars(input, output, out int charsWritten))
+                throw new InvalidOperationException("Invalid GUID bytes.");
 
-            for (int i = 0; i < output.Length; i++)
+            for (int i = 0; i < charsWritten; i++)
             {
                 switch (output[i])
                 {
                     case '=':
-                        return new string(output, 0, i);
+                        return output[..i].ToString();
                     case '+':
                         output[i] = '-';
                         break;
@@ -77,23 +139,24 @@ namespace CodeBits
                 }
             }
 
-            return new string(output, 0, outputBytes);
+            return output[..charsWritten].ToString();
         }
 
-        private static byte[] Base64UrlDecode(string input)
+        private static (bool Success, byte[]? Bytes, Exception? Exception) TryBase64UrlDecode(ReadOnlySpan<char> input)
         {
-            if (input is null)
-                throw new ArgumentNullException(nameof(input));
             if (input.Length == 0)
-                return Array.Empty<byte>();
+                return (false, Array.Empty<byte>(), null);
 
             int paddingCharsToAddForDecode = (input.Length % 4) switch
             {
                 0 => 0,
                 2 => 2,
                 3 => 1,
-                _ => throw new ArgumentException("Input is malformed"),
+                _ => -1,
             };
+
+            if (paddingCharsToAddForDecode == -1)
+                return (false, null, new ArgumentException("Input is malformed", nameof(input)));
 
             char[] buffer = new char[checked(input.Length + paddingCharsToAddForDecode)];
 
@@ -117,7 +180,11 @@ namespace CodeBits
                 bufferIndex++;
             }
 
-            return Convert.FromBase64CharArray(buffer, 0, buffer.Length);
+            Span<byte> decodedBytes = stackalloc byte[buffer.Length * 3 / 4];
+            if (!Convert.TryFromBase64Chars(buffer, decodedBytes, out int bytesWritten))
+                return (false, null, new ArgumentException("Invalid input.", nameof(input)));
+
+            return (true, decodedBytes[..bytesWritten].ToArray(), null);
         }
 
         public static implicit operator Guid(ShortGuid shortGuid)
@@ -138,6 +205,11 @@ namespace CodeBits
         public static implicit operator ShortGuid(string str)
         {
             return Parse(str);
+        }
+
+        public static implicit operator ShortGuid(ReadOnlySpan<char> chars)
+        {
+            return Parse(chars);
         }
 
         /// <summary>
