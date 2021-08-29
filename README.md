@@ -6,14 +6,15 @@ Code Bits does not add assemblies to your project.
 You can do a search for '[CodeBits](https://www.nuget.org/packages?q=CodeBits)' on NuGet.org to view the list of available Code Bits packages.
 
 ## General code bits
-| Name | Description |
-|------|-------------|
-| *[ByteArrayHelper](https://github.com/JeevanJames/CodeBits/wiki/ByteArrayHelper)* | Set of utility extensions for byte arrays. |
-| *[ByteSizeFriendlyName](https://github.com/JeevanJames/CodeBits/wiki/ByteSizeFriendlyName)* | Builds a friendly string representation of a specified byte size value, after converting it to the best matching unit (bytes, KB, MB, GB, etc.). |
-| *[EnumIterator](https://github.com/JeevanJames/CodeBits/wiki/EnumIterator)* | Provides an iterator for traversing through the values of an enum type. |
-| *[IniFile](https://github.com/JeevanJames/CodeBits/wiki/IniFile)* | Class to read and modify .INI files. |
-| *[PasswordGenerator](https://github.com/JeevanJames/CodeBits/wiki/PasswordGenerator)* | Generates a random password. |
-| *[SaltedHash](https://github.com/JeevanJames/CodeBits/wiki/SaltedHash)* | A helper class to generate and validate salted hashes. |
+| Name | Compatibility | Description |
+|------|---------------|-------------|
+| *[ByteArrayHelper](https://github.com/JeevanJames/CodeBits/wiki/ByteArrayHelper)* | .NET Framework 3.5 and higher | Set of utility extensions for byte arrays. |
+| *[ByteSizeFriendlyName](https://github.com/JeevanJames/CodeBits/wiki/ByteSizeFriendlyName)* | .NET Framework 3.5 and higher | Builds a friendly string representation of a specified byte size value, after converting it to the best matching unit (bytes, KB, MB, GB, etc.). |
+| *[EnumIterator](https://github.com/JeevanJames/CodeBits/wiki/EnumIterator)* | .NET Framework 3.5 and higher | Provides an iterator for traversing through the values of an enum type. |
+| *[IniFile](https://github.com/JeevanJames/CodeBits/wiki/IniFile)* | .NET Framework 3.5 and higher | Class to read and modify .INI files. |
+| *[PasswordGenerator](https://github.com/JeevanJames/CodeBits/wiki/PasswordGenerator)* | .NET Framework 3.5 and higher | Generates a random password. |
+| *[SaltedHash](https://github.com/JeevanJames/CodeBits/wiki/SaltedHash)* | .NET Framework 3.5 and higher | A helper class to generate and validate salted hashes. |
+| *[ShortGuid](https://github.com/JeevanJames/CodeBits/wiki/ShortGuid)* | .NetStandard 2.1 and higher | Shorter, URL-friendly and readable GUID. |
 
 ## Custom collections
 | Name | Description |
