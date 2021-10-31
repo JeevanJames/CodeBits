@@ -1,0 +1,7 @@
+{
+    "id": "ResourceExtensions",
+    "title": "Embedded resource extensions",
+    "description": "Extensions for loading assembly embedded resources in various formats.",
+    "tags": "embedded-resource resource assembly extensions",
+    "project": "CodeBits.NetStandard20"
+}

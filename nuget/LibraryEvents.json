@@ -1,0 +1,7 @@
+{
+    "id": "LibraryEvents",
+    "title": "Status events for class libraries",
+    "description": "Provides class libraries with the ability to generate status events.",
+    "tags": "class-library library events",
+    "project": "CodeBits.NetStandard20"
+}

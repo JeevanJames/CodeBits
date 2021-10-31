@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RootNamespace>CodeBits</RootNamespace>
+        <AssemblyName>CodeBits.NetStandard20</AssemblyName>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+</Project>
