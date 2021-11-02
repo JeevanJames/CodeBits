@@ -194,7 +194,7 @@ namespace CodeBits
 
         public static implicit operator ShortGuid(Guid guid)
         {
-            return new(guid);
+            return new ShortGuid(guid);
         }
 
         public static implicit operator string(ShortGuid shortGuid)

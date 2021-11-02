@@ -3,5 +3,5 @@
     "title": "Embedded resource extensions",
     "description": "Extensions for loading assembly embedded resources in various formats.",
     "tags": "embedded-resource resource assembly extensions",
-    "project": "CodeBits.NetStandard20"
+    "project": "CodeBits.NetStandard21"
 }

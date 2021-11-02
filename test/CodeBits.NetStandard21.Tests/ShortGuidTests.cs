@@ -118,7 +118,7 @@ namespace CodeBits.NetStandard21.Tests
         public void Can_convert_from_string_using_type_converter(string str)
         {
             TypeConverter typeConverter = TypeDescriptor.GetConverter(typeof(ShortGuid));
-            ShortGuid sguid = (ShortGuid)typeConverter.ConvertFrom(str);
+            var sguid = (ShortGuid)typeConverter.ConvertFrom(str);
 
             typeConverter.CanConvertFrom(typeof(string)).ShouldBe(true);
             sguid.ToString().ShouldBe(str);
@@ -127,7 +127,7 @@ namespace CodeBits.NetStandard21.Tests
         [Theory, MemberData(nameof(GetValidShortGuidStrings))]
         public void Can_serialize_to_and_from_json(string str)
         {
-            RecordWithShortGuid data = new() { SGValue = str };
+            var data = new RecordWithShortGuid { SGValue = str };
             string serialized = JsonSerializer.Serialize(data);
             serialized.ShouldBe($"{{\"SGValue\":\"{str}\"}}");
 
@@ -142,7 +142,7 @@ namespace CodeBits.NetStandard21.Tests
             for (int i = 0; i < 1000; i++)
             {
                 Guid guid = Guid.NewGuid();
-                ShortGuid sguid = new ShortGuid(guid);
+                var sguid = new ShortGuid(guid);
 
                 _log.WriteLine($"{sguid} <==> {guid:D}");
 

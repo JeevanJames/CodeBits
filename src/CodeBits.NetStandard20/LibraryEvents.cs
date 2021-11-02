@@ -115,7 +115,7 @@ namespace CodeBits
     {
         //NOTE: Declared in a separate class as static fields are not shared between different instances
         //of that generic type (Sonar analyzer S2743)
-        internal static readonly Regex PlaceholderPattern = new(@"\{(\w+)\}",
+        internal static readonly Regex PlaceholderPattern = new Regex(@"\{(\w+)\}",
             RegexOptions.Compiled | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
     }
 }

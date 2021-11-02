@@ -36,6 +36,7 @@ using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 #endif
 
+#pragma warning disable CS8424 // The EnumeratorCancellationAttribute will have no effect. The attribute is only effective on a parameter of type CancellationToken in an async-iterator method returning IAsyncEnumerable
 namespace CodeBits
 {
     public static partial class ResourceExtensions
@@ -89,7 +90,7 @@ namespace CodeBits
 
         private static async Task<string> StringConverter(Stream resourceStream, CancellationToken cancellationToken)
         {
-            using StreamReader reader = new(resourceStream);
+            using var reader = new StreamReader(resourceStream);
             return await reader.ReadToEndAsync().ConfigureAwait(false);
         }
 
@@ -138,7 +139,7 @@ namespace CodeBits
         private static async Task<IEnumerable<string>> LinesConverter(Stream resourceStream,
             CancellationToken cancellationToken)
         {
-            using StreamReader reader = new(resourceStream);
+            using var reader = new StreamReader(resourceStream);
 
             var lines = new List<string>();
 
@@ -285,10 +286,37 @@ namespace CodeBits
 #endif
     }
 
+    // Load multiple resources
     public static partial class ResourceExtensions
     {
 #if CODEBITS_ASYNC_ENUMERABLE
-        public static async IAsyncEnumerable<KeyValuePair<string, T>> LoadResourcesInternal<T>(this Assembly assembly,
+        public static IAsyncEnumerable<EmbeddedResource<T>> LoadResourcesAsync<T>(this Assembly assembly,
+            Func<string, bool> resourceSelector,
+            Func<string, CancellationToken, Task<T>> converter,
+            Func<string, string>? nameConverter = null,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
+            return assembly.LoadResourcesAsync(resourceSelector, async (stream, ct) =>
+            {
+                string str = await StringConverter(stream, ct).ConfigureAwait(false);
+                return await converter(str, ct).ConfigureAwait(false);
+            }, nameConverter, cancellationToken);
+        }
+
+        public static IAsyncEnumerable<EmbeddedResource<T>> LoadResourcesAsync<T>(this Assembly assembly,
+            Func<string, bool> resourceSelector,
+            Func<byte[], CancellationToken, Task<T>> converter,
+            Func<string, string>? nameConverter = null,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
+            return assembly.LoadResourcesAsync(resourceSelector, async (stream, ct) =>
+            {
+                byte[] bytes = await BinaryConverter(stream, ct).ConfigureAwait(false);
+                return await converter(bytes, ct).ConfigureAwait(false);
+            }, nameConverter, cancellationToken);
+        }
+
+        public static async IAsyncEnumerable<EmbeddedResource<T>> LoadResourcesAsync<T>(this Assembly assembly,
             Func<string, bool> resourceSelector,
             Func<Stream, CancellationToken, Task<T>> converter,
             Func<string, string>? nameConverter = null,
@@ -308,25 +336,38 @@ namespace CodeBits
                     continue;
 
                 Stream? resourceStream = assembly.GetManifestResourceStream(resourceName);
-                yield return new KeyValuePair<string, T>(nameConverter?.Invoke(resourceName) ?? resourceName,
+                yield return new EmbeddedResource<T>(nameConverter?.Invoke(resourceName) ?? resourceName,
                     await converter(resourceStream, cancellationToken).ConfigureAwait(false));
             }
         }
 #else
-        public static Task<IEnumerable<KeyValuePair<string, T>>> LoadResourcesInternal<T>(this Assembly assembly,
+        public static Task<IEnumerable<EmbeddedResource<T>>> LoadResourcesAsync<T>(this Assembly assembly,
             Func<string, bool> resourceSelector,
             Func<string, CancellationToken, Task<T>> converter,
             Func<string, string>? nameConverter = null,
             CancellationToken cancellationToken = default)
         {
-            return assembly.LoadResourcesInternal(resourceSelector, async (stream, ct) =>
+            return assembly.LoadResourcesAsync(resourceSelector, async (stream, ct) =>
             {
-                string str = await StringConverter(stream, ct);
-                return await converter(str, ct);
+                string str = await StringConverter(stream, ct).ConfigureAwait(false);
+                return await converter(str, ct).ConfigureAwait(false);
             }, nameConverter, cancellationToken);
         }
 
-        public static async Task<IEnumerable<KeyValuePair<string, T>>> LoadResourcesInternal<T>(this Assembly assembly,
+        public static Task<IEnumerable<EmbeddedResource<T>>> LoadResourcesAsync<T>(this Assembly assembly,
+            Func<string, bool> resourceSelector,
+            Func<byte[], CancellationToken, Task<T>> converter,
+            Func<string, string>? nameConverter = null,
+            CancellationToken cancellationToken = default)
+        {
+            return assembly.LoadResourcesAsync(resourceSelector, async (stream, ct) =>
+            {
+                byte[] bytes = await BinaryConverter(stream, ct);
+                return await converter(bytes, ct);
+            }, nameConverter, cancellationToken);
+        }
+
+        public static async Task<IEnumerable<EmbeddedResource<T>>> LoadResourcesAsync<T>(this Assembly assembly,
             Func<string, bool> resourceSelector,
             Func<Stream, CancellationToken, Task<T>> converter,
             Func<string, string>? nameConverter = null,
@@ -339,7 +380,7 @@ namespace CodeBits
             if (converter is null)
                 throw new ArgumentNullException(nameof(converter));
 
-            var resources = new List<KeyValuePair<string, T>>();
+            var resources = new List<EmbeddedResource<T>>();
 
             string[] resourceNames = assembly.GetManifestResourceNames();
             foreach (string resourceName in resourceNames)
@@ -348,7 +389,7 @@ namespace CodeBits
                     continue;
 
                 Stream? resourceStream = assembly.GetManifestResourceStream(resourceName);
-                resources.Add(new KeyValuePair<string,T>(nameConverter?.Invoke(resourceName) ?? resourceName,
+                resources.Add(new EmbeddedResource<T>(nameConverter?.Invoke(resourceName) ?? resourceName,
                     await converter(resourceStream, cancellationToken).ConfigureAwait(false)));
             }
 
@@ -356,4 +397,36 @@ namespace CodeBits
         }
 #endif
     }
+
+    /// <summary>
+    ///     Represents an assembly embedded resource.
+    /// </summary>
+    /// <typeparam name="T">The type of the resource contents.</typeparam>
+    public sealed class EmbeddedResource<T>
+    {
+        internal EmbeddedResource(string name, T content)
+        {
+            if (name is null)
+                throw new ArgumentNullException(nameof(name));
+            Name = name;
+            Content = content;
+        }
+
+        /// <summary>
+        ///     Gets the name of the embedded resource.
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
+        ///     Gets the contents of the embedded resource.
+        /// </summary>
+        public T Content { get; }
+
+        public void Deconstruct(out string name, out T content)
+        {
+            name = Name;
+            content = Content;
+        }
+    }
 }
+#pragma warning restore CS8424 // The EnumeratorCancellationAttribute will have no effect. The attribute is only effective on a parameter of type CancellationToken in an async-iterator method returning IAsyncEnumerable
