@@ -143,11 +143,11 @@ namespace CodeBits
 
             var lines = new List<string>();
 
-            string line = await reader.ReadLineAsync().ConfigureAwait(false);
-            while (line is not null)
+            string line;
+            while (!cancellationToken.IsCancellationRequested
+                && (line = await reader.ReadLineAsync().ConfigureAwait(false)) is not null)
             {
                 lines.Add(line);
-                line = await reader.ReadLineAsync().ConfigureAwait(false);
             }
 
             return lines;
@@ -390,7 +390,7 @@ namespace CodeBits
 
                 Stream? resourceStream = assembly.GetManifestResourceStream(resourceName);
                 resources.Add(new EmbeddedResource<T>(nameConverter?.Invoke(resourceName) ?? resourceName,
-                    await converter(resourceStream, cancellationToken).ConfigureAwait(false)));
+                    await converter(resourceStream!, cancellationToken).ConfigureAwait(false)));
             }
 
             return resources;
