@@ -34,6 +34,16 @@ namespace CodeBits
 {
     public static class EventArgsExtensions
     {
+        /// <summary>
+        ///     Fires a status event of type <typeparamref name="TType"/> with the <paramref name="caller"/>
+        ///     as the sender.
+        /// </summary>
+        /// <typeparam name="TType">The type of status being fired.</typeparam>
+        /// <param name="caller">The object firing the event.</param>
+        /// <param name="handler">The event handler.</param>
+        /// <param name="statusType">The status type of the event.</param>
+        /// <param name="metadata"></param>
+        /// <param name="message"></param>
         public static void FireStatusEvent<TType>(this object caller,
             EventHandler<StatusEventArgs<TType>>? handler,
             TType statusType,
@@ -88,13 +98,17 @@ namespace CodeBits
             else
             {
                 Message = Patterns.PlaceholderPattern.Replace(message, match =>
-                    metadataBag.TryGetValue(match.Groups[1].Value, out object? obj) ? obj.ToString()! : match.Value);
+                    metadataBag.TryGetValue(match.Groups[1].Value, out object? obj) ? obj.ToString() : match.Value);
             }
+
+            Metadata = metadata;
         }
 
         public TType StatusType { get; }
 
         public string? Message { get; }
+
+        public object? Metadata { get; }
     }
 
     internal static class Patterns

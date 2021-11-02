@@ -12,7 +12,9 @@ You can do a search for '[CodeBits](https://www.nuget.org/packages?q=CodeBits)' 
 | *[ByteSizeFriendlyName](https://github.com/JeevanJames/CodeBits/wiki/ByteSizeFriendlyName)* | .NET Framework 3.5 and higher | Builds a friendly string representation of a specified byte size value, after converting it to the best matching unit (bytes, KB, MB, GB, etc.). |
 | *[EnumIterator](https://github.com/JeevanJames/CodeBits/wiki/EnumIterator)* | .NET Framework 3.5 and higher | Provides an iterator for traversing through the values of an enum type. |
 | *[IniFile](https://github.com/JeevanJames/CodeBits/wiki/IniFile)* | .NET Framework 3.5 and higher | Class to read and modify .INI files. |
+| *[LibraryEvents](https://github.com/JeevanJames/CodeBits/wiki/LibraryEvents)* | .NetStandard 2.0 and higher | Provides support for class libraries to raise status events. |
 | *[PasswordGenerator](https://github.com/JeevanJames/CodeBits/wiki/PasswordGenerator)* | .NET Framework 3.5 and higher | Generates a random password. |
+| *[ResourceExtensions](https://github.com/JeevanJames/CodeBits/wiki/ResourceExtensions)* | .NetStandard 2.0 and higher | Extensions for loading assembly embedded resources in various formats. |
 | *[SaltedHash](https://github.com/JeevanJames/CodeBits/wiki/SaltedHash)* | .NET Framework 3.5 and higher | A helper class to generate and validate salted hashes. |
 | *[ShortGuid](https://github.com/JeevanJames/CodeBits/wiki/ShortGuid)* | .NetStandard 2.1 and higher | Shorter, URL-friendly and readable GUID. |
 
