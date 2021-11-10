@@ -143,7 +143,7 @@ namespace CodeBits
 
             var lines = new List<string>();
 
-            string line;
+            string? line;
             while (!cancellationToken.IsCancellationRequested
                 && (line = await reader.ReadLineAsync().ConfigureAwait(false)) is not null)
             {
@@ -201,7 +201,11 @@ namespace CodeBits
 
         private static async Task<byte[]> BinaryConverter(Stream resourceStream, CancellationToken cancellationToken)
         {
+#if NETSTANDARD2_1_OR_GREATER
             await using var ms = new MemoryStream();
+#else
+            using var ms = new MemoryStream();
+#endif
             await resourceStream.CopyToAsync(ms, cancellationToken).ConfigureAwait(false);
             return ms.ToArray();
         }
